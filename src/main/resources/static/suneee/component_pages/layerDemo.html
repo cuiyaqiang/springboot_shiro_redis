@@ -1,0 +1,238 @@
+<div id="layerTest" class="newpage-con">
+    <div class="row">
+        <div class="col-lg-9">
+            <input id="openformlayer" type="button" name="" value="弹出含表单的内容" class="btn btn-primary">
+            <input id="openlayer" type="button" name="" value="弹出模板绑定的内容" class="btn btn-primary">
+            <input id="opencomfirm" type="button" name="" value="弹出询问" class="btn btn-primary">
+            <input type="button" id="msgbtn" value="toast" class="btn btn-primary"/>
+            <input type="button" id="loadingbtn" value="loading" class="btn btn-default"/>
+            <input type="button" id="alertbtn" value="alert" class="btn btn-default"/>
+            <input type="button" id="layerTips" value="layerTips" class="btn btn-primary"/>
+            <input type="button" id="notice" value="桌面提醒功能" class="btn btn-primary"/>
+
+        </div>
+    </div>
+
+
+    <script id="testTempl" type="text/html">
+        {{if isAdmin}}
+
+        <h1>{{title}}</h1>
+        <ul>
+            {{each list value i}}
+            <li>索引 {{i + 1}} ：{{value}}</li>
+            {{/each}}
+        </ul>
+        {{/if}}
+        <p>{{$data}}</p>
+
+        <input type="button" class="btn btn-info" name="" value="点击我试试" id="testTexr">
+
+    </script>
+
+    <script id="formTempl" type="text/html">
+        <div style="width: 100%;height:100%;padding-top: 20px;overflow-x: hidden">
+            <form id="signup" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="account" class="col-md-4 control-label">账号：</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="account" id="account"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-md-4 control-label">密码：</label>
+                    <div class="col-md-6">
+                        <input type="password" class="form-control" name="password" id="password"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="col-md-4 control-label">确认密码：</label>
+                    <div class="col-md-6">
+                        <input type="password" class="form-control" name="confirm_password" id="confirm_password"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="col-md-4 control-label">邮箱：</label>
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" name="email" id="email"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname" class="col-md-4 control-label">姓：</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="firstname" id="firstname"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastname" class="col-md-4 control-label">名：</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="lastname" id="lastname"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-4">
+                        <div class="checkbox">
+                            <label><input id="agree" type="checkbox" name="agree"/>同意xxxx协议</label>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="form-group form-actions">-->
+                <!--<div class="col-md-6 col-md-offset-4">-->
+                <!--<button type="submit" class="btn btn-primary">注册</button>-->
+                <!--</div>-->
+                <!--</div>-->
+            </form>
+        </div>
+    </script>
+
+</div>
+<script>
+    $(function () {
+        var data = {
+            title: '基本例子',
+            isAdmin: true,
+            list: ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']
+        };
+        var formhtml = template('formTempl', {});
+        var temphtml = template('testTempl', data);
+
+        $("#openlayer").on("click", function () {
+            layer.open({
+                type: 1,
+                maxmin: true, //开启最大化最小化按钮
+                skin: 'layui-layer-rim', //加上边框
+                area: ['400px', '500px'], //宽高
+                content: temphtml,
+                success: function () {
+                    $("#testTexr").on("click", function () {
+                        alert("被点击了");
+                    });
+                },
+                btn: ["确定", "取消"],
+                yes: function () {
+                    $('#signup').submit();
+                }
+            });
+        });
+
+
+        $("#notice").on("click", function () {
+            new suneeeUI.notice({title: "您好", text: "您有新的通知", icon: "img/icon/favicon.png"}, function (e) {
+                alert("回调");
+            }).show();
+        });
+
+        $("#openformlayer").on("click", function () {
+            layer.open({
+                type: 1,
+                // skin: 'layui-layer-rim', //加上边框
+                area: ['400px', '500px'], //宽高
+                content: formhtml,
+                success: function () {
+                    _listener();
+                },
+                btn: ["确定", "取消"],
+                yes: function () {
+                    $('#signup').submit();
+                }
+            });
+        });
+
+
+        $("#msgbtn").on("click", function () {
+
+            layer.msg("I am a toaster");
+
+        });
+
+        $("#alertbtn").on("click", function () {
+
+            layer.alert("我只是想警告一下");
+
+        });
+
+        $("#loadingbtn").on("click", function () {
+
+            var index = layer.load();
+            setTimeout(function () {
+                layer.close(index);
+            }, 1000);
+
+        });
+
+        $("#layerTips").on("click", function () {
+
+            layer.tips("我只是想试试tips啦", "#layerTips");
+        });
+
+
+        function _listener() {
+
+            // validate signup form on keyup and submit
+            $("#signup").validate({
+                rules: {
+                    firstname: "required",
+                    lastname: "required",
+                    account: {
+                        required: true,
+                        minlength: 6
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    confirm_password: {
+                        required: true,
+                        minlength: 5,
+                        equalTo: "#password"
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    agree: "required"
+                },
+                messages: {
+                    firstname: "请输入您的姓",
+                    lastname: "请输入您的名",
+                    account: {
+                        required: "请输入用户名",
+                        minlength: "用户名长度至少为6"
+                    },
+                    password: {
+                        required: "请输入密码",
+                        minlength: "密码长度至少为6"
+                    },
+                    confirm_password: {
+                        required: "请确认密码",
+                        minlength: "密码长度至少为6",
+                        equalTo: "密码不一致"
+                    },
+                    email: "请输入邮箱账号",
+                    agree: "请同意我们的协议"
+                }
+            });
+        }
+
+        $("#opencomfirm").on("click", function () {
+            layer.confirm('您是如何看待前端开发？', {
+                btn: ['重要', '奇葩'] //按钮
+            }, function () {
+                layer.msg('的确很重要', {
+                    icon: 1
+                });
+            }, function () {
+                layer.msg('也可以这样', {
+                    time: 20000, //20s后自动关闭
+                    btn: ['明白了', '知道了']
+                });
+            });
+        });
+
+
+    });
+</script>

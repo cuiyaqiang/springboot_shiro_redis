@@ -1,0 +1,1265 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div id="role-manage-table">
+
+        </div>
+    </div>
+</div>
+
+
+<!--新增弹窗开始-->
+<script id="addRoleTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="addRoleDlg" class="from_table_con">
+            <form role="form">
+                <input type="hidden" name="roleId" value="" />
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>角色编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="roleCode" value="" /></td>
+                        <th>角色名<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="roleName" value="" /></td>
+                    </tr>
+                    <tr>
+                        <th>描述</th>
+                        <td><input type="text" class="form-control" name="roleDescribe" value="" /></td>
+                        <th>状态</th>
+                        <td>
+                            <input type="hidden" id="hidden_add_valid" value="{{valid}}">
+                            <select id="add_valid" name="valid" class="form-control">
+                                <option value="1">可用</option>
+                                <option value="0">不可用</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="add_enterprise_tr">
+                        <th>企业编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control enterprisecode_entry" id="enterprisecode" name="enterprisecode" value="" /></td>
+                        <th>企业id</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="enterpriseid" name="enterpriseid" value="" /></td>
+                    </tr>
+                    <tr id="add_org_tr">
+                        <th>组织机构ID</th>
+                        <td><input type="text" class="form-control orgid_entry"  id="orgid" name="orgid" value=""/></td>
+                        <th>组织机构名称</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="orgname" name="orgname" value=""/></td>
+                    </tr>
+                    <tr id="add_roletype_tr">
+                        <th>企业管理员角色</th>
+                        <td>
+                            <input type="hidden" id="hidden_add_roleType" value="{{roleType}}">
+                            <select id="add_roleType" name="roleType" class="form-control">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div id="add_role_notice">
+                    <p class="songti-p">1：如果是企业管理员角色，请选择“是”，否则选择“否”，组织机构为虚拟组织机构，请输入EPADMIN</p>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</script>
+<!--新增弹窗结束-->
+
+
+<!--编辑弹窗开始-->
+<script id="editRoleTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="editRoleDlg" class="from_table_con">
+            <form role="form">
+                <input type="hidden" name="roleId" value="{{roleId}}" />
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>角色编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="roleCode" readonly="readonly" value="{{roleCode}}" /></td>
+                        <th>角色名<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="roleName" value="{{roleName}}" /></td>
+                    </tr>
+                    <tr>
+                        <th>描述</th>
+                        <td><input type="text" class="form-control" name="roleDescribe" value="{{roleDescribe}}" /></td>
+                        <th>状态</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_valid" value="{{valid}}">
+                            <select id="edit_valid" name="valid" class="form-control">
+                                <option value="1">可用</option>
+                                <option value="0">不可用</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="edit_enterprise_tr">
+                        <th>企业编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control " readonly="readonly"  id="edit_enterprisecode" name="enterprisecode" value="{{enterprisecode}}" /></td>
+                        <th>企业id</th>
+                        <td><input type="text" class="form-control" readonly="readonly"  id="edit_enterpriseid" name="enterpriseid" value={{enterpriseid}} /></td>
+                    </tr>
+                    <tr id="edit_org_tr">
+                        <th>组织机构ID</th>
+                        <td><input type="text" class="form-control orgid_entry" id="edit_orgid" name="orgid" value="{{orgid}}"/></td>
+                        <th>组织机构名称</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="edit_orgname" name="orgname" value="{{orgname}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>企业管理员角色</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_roleType" value="{{roleType}}">
+                            <select id="edit_roleType" name="roleType" class="form-control">
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+    </div>
+</script>
+<!--编辑弹窗结束-->
+
+
+<!-- 详情弹窗开始-->
+<script id="system-roleInfoDetail" type="text/html">
+    <table cellpadding="0" cellspacing="0" class="from_table">
+        <tr>
+            <th>角色编码<label class="required">*</label></th>
+            <td><input type="text" class="form-control" name="roleCode" readonly="readonly" value="{{roleCode}}" /></td>
+            <th>角色名<label class="required">*</label></th>
+            <td><input type="text" class="form-control" name="roleName" readonly="readonly" value="{{roleName}}" /></td>
+        </tr>
+        <tr>
+            <th>描述</th>
+            <td><input type="text" class="form-control" name="roleDescribe" readonly="readonly" value="{{roleDescribe}}" /></td>
+            <th>状态</th>
+            <td>
+                <input type="hidden" id="hidden_detail_valid" value="{{valid}}">
+                <select id="detail_valid" name="valid" class="form-control">
+                    <option value="1">可用</option>
+                    <option value="0">不可用</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>企业编码<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly"  name="enterprisecode" value="{{enterprisecode}}" /></td>
+            <th>企业id</th>
+            <td><input type="text" class="form-control" readonly="readonly"  name="enterpriseid" value={{enterpriseid}} /></td>
+        </tr>
+        <tr id="detail_org_tr">
+            <th>组织机构ID</th>
+            <td><input type="text" class="form-control orgid_entry" readonly="readonly" id="detail_orgid" name="orgid" value="{{orgid}}"/></td>
+            <th>组织机构名称</th>
+            <td><input type="text" class="form-control" readonly="readonly" id="detail_orgname" name="orgname" value="{{orgname}}"/></td>
+        </tr>
+        <tr>
+            <th>企业管理员角色</th>
+            <td>
+                <input type="hidden" id="hidden_detail_roleType" value="{{roleType}}">
+                <select id="detail_roleType" name="roleType" class="form-control">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</script>
+<!-- 详情弹窗结束-->
+
+<!--关联用户新增弹窗开始-->
+<script id="addUserRoleTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="addUserRoleDlg" class="from_table_con">
+            <form role="form" id="addUserRoleDlgForm">
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>账号<label class="required">*</label></th>
+                        <td><input type="text" class="form-control employee_entry" id="account" name="account" value="" /></td>
+                        <th>姓名<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" id="addUser_name" name="name" readonly="readonly" value="" /></td>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
+    </div>
+</script>
+<!--关联用户新增弹窗结束-->
+
+
+<!-- 详情弹窗开始-->
+<script id="RoleInfoDetail" type="text/html">
+    <div class="col-xs-12">
+        <input value="新增" type="button"   id="userAdd" class="btn btn-primary" />
+        <input value="删除" type="button"   id="userDelete" class="btn btn-primary" />
+        <div id="role-detail-table">
+
+        </div>
+    </div>
+</script>
+<!-- 详情弹窗结束-->
+
+<script  id="Roleauthors" type="text/html">
+    <div class="col-xs-12">
+        <input value="保存" type="button"   id="menuRoleSave" class="btn btn-primary" />
+    </div>
+    <div class="col-xs-6">
+        <strong>菜单权限</strong>
+        <div id="role-menu-tree">
+            <ul id="menuTreeId" style="height: 400px;overflow-y: auto;" class="ztree"></ul>
+        </div>
+        <div>
+            <input value="确定" type="button"   id="menu-commit" class="btn btn-primary" />
+            <input value="取消" type="button"   id="menu-cancel" class="btn btn-primary" />
+        </div>
+    </div>
+    <div class="col-xs-6" id="opt">
+        <strong>功能权限</strong>
+        <div id="role-func-tree">
+            <ul id="opTreeId" style="height: 400px;overflow-y: auto;" class="ztree"></ul>
+        </div>
+        <div>
+            <input value="取消" type="button"   id="func-cancel" class="btn btn-primary" />
+        </div>
+    </div>
+</script>
+
+
+<!-- 高级搜索框开始 -->
+<script id="rolemanage_searchpanelTpl" type="text/html">
+    <table cellpadding="0" cellspacing="0" class="from_table">
+        <tr>
+            <th>角色编码</th>
+            <td><input type="text" class="form-control" name="roleCode"/>
+            </td>
+        </tr>
+        <tr>
+            <th>角色名称</th>
+            <td><input type="text" class="form-control" name="roleName"/>
+            </td>
+        </tr>
+    </table>
+</script>
+<!-- 高级搜索框结束 -->
+
+
+<script type="text/javascript">
+    $(function () {
+        //表格的属性对象，用于初始化表格的设置
+        var option = {
+            plusBtn:[
+//            {
+//                id : "level_edit", // 按钮的id
+//                text : "编辑", // 显示的文字
+//                clazz : "btn btn-primary btn-sm",// 按钮的class
+//            }, {
+//                id : "level_delete", // 按钮的id
+//                text : "删除", // 显示的文字
+//                clazz : "btn btn-primary btn-sm",// 按钮的class
+//            }, {
+//                id : "search", // 按钮的id
+//                text : "查询", // 显示的文字
+//                clazz : "btn btn-primary btn-sm",// 按钮的class
+//            }
+            ],
+            onInit:function(){
+//                $("#level_edit").on("click", function() {
+//                    toEidtFun(table);
+//                });
+//                $("#level_delete").on("click", function() {
+//                    deletetable(table);
+//                });
+//                $("#search").on("click", function() {
+//                    openSearchDlg(table)
+//                });
+            },
+            //编辑
+            batchedit:function () {
+                toEidtFun(table);
+            },
+            //批量删除
+            batchdel:function () {
+                deletetable(table);
+            },
+            //查询
+            batchsearch:function () {
+                openSearchDlg(table)
+            },
+            // "新增窗口"的配置
+            add: {
+                title: "角色信息", //窗口标题
+                id: "addRoleDlg", //窗口的ID,这里不能自己写，要跟窗口div的id相同
+                height: "400px",
+                width: "800px",
+                templId: "addRoleTempl", //窗口内容的ID
+                url:  "/role/roleAdd", //点保存跳转的地址，框架默认是POST请求，无需自己配置
+                openCallback: function () { //点击事件，比如提交，关闭窗口等
+                    //初始化企业编号，企业id
+                    $.ajax({
+                        type: "GET",
+                        url: "/role/getLoginInfo",
+                        dataType: "json",
+                        error: function (result) {
+                            console.info(e);
+                            layer.msg("请求出错！");
+                        },
+                        success: function (result) {
+                            if(result.returnCode==1){
+                                var enterprisecode = result.data[0].enterprisecode;
+                                var enterpriseid = result.data[0].enterpriseid;
+                                $("#enterprisecode").val(enterprisecode);
+                                $("#enterpriseid").val(enterpriseid);
+                            }else{
+                                layer.msg(result.msg);
+                            }
+                        }
+                    });
+
+                    var test4 = $(".enterprisecode_entry").bigAutocomplete({
+                        width : 'auto',
+                        id : [ 'enterprisecode', 'enterprisename', 'enterpriseid' ],
+                        highlight : true,
+                        ajax : {
+                            url : '/enterprise/getEnterpriseList',
+                            type : "GET",
+                            success : function(data) {
+                                var result = eval(data);
+                                var Str = result.data[0];
+                                var datas = [];
+                                for (var i = 0; i < Str.length; i++) {
+                                    datas[i] = [];
+                                    datas[i].push(Str[i].enterprisecode);
+                                    datas[i].push(Str[i].enterprisename);
+                                    datas[i].push(Str[i].enterpriseid);
+                                }
+                                test4.setData(datas, true); // 设置显示的内容，并更新
+                                test4.setTitle([ '企业编码', '企业名称', '企业id' ]); // 设置标题
+                            }
+                        },
+                        callback:function(rowData){
+                            $("#enterprisecode").val(rowData[0]);
+                            $("#enterpriseid").val(rowData[2]);
+
+                            var test6 = $(".orgid_entry").bigAutocomplete({
+                                width : 'auto',
+                                id : [ 'orgid', 'orgname'],
+                                highlight : true,
+                                ajax : {
+                                    url : '/user/getOrgList?enterpriseid='+$("#enterpriseid").val(),
+                                    type : "GET",
+                                    success : function(data) {
+                                        var result = "";
+                                        var Str = "";
+                                        if (data != undefined && data != "") {
+                                            result = eval(data);
+                                            Str = result.data[0];
+                                        }
+                                        var datas = [];
+                                        for (var i = 0; i < Str.length; i++) {
+                                            datas[i] = [];
+                                            datas[i].push(Str[i].companyid);
+                                            datas[i].push(Str[i].companyname);
+                                        }
+                                        test6.setData(datas, true); // 设置显示的内容，并更新
+                                        test6.setTitle([ '组织机构ID', '组织机构名称']); // 设置标题
+                                    }
+                                },
+                                callback:function(rowData){
+                                    $("#orgid").val(rowData[0]);
+                                    $("#orgname").val(rowData[1]);
+                                }
+                            });
+                        }
+                    });
+                },
+                validated: { //校验
+                    rules: { //校验规则
+                        roleCode: "required",
+                        roleName: "required",
+                        valid: "required",
+                        enterprisecode: "required",
+                        enterpriseid: "required"
+                    },
+                    messages: { //校验提示信息
+                        roleCode: "角色编码不能为空",
+                        roleName: "角色名不能为空",
+                        valid: "请选择状态",
+                        enterprisecode: "企业编码不能为空",
+                        enterpriseid: "企业id不能为空"
+                    }
+
+                }
+            },
+            del: {
+                onclick:function (index,row) {
+                    deleteOneFun(row,table);
+                }
+            },
+            edit:{
+                onclick:function (index,row) {
+                    var html = template("editRoleTempl",row);
+
+                    var editopen = layer.open({
+                        type: 1,
+                        title: "角色信息编辑",
+                        maxmin: true,
+                        area: ['800px', '400px'], //宽高
+                        content: html,
+                        btn:["确定","取消"],
+                        success: function () {
+                            var valid=$("#hidden_edit_valid").val();
+                            $("#edit_valid").val(valid);
+                            var roleType=$("#hidden_edit_roleType").val();
+                            $("#edit_roleType").val(roleType);
+                            if(enterpriseLevel<100){
+                                $("#edit_roleType").attr("readonly",true);
+                            }
+
+
+                            var test6 = $(".orgid_entry").bigAutocomplete({
+                                width : 'auto',
+                                id : [ 'orgid', 'orgname'],
+                                highlight : true,
+                                ajax : {
+                                    url : '/user/getOrgList?enterpriseid='+$("#edit_enterpriseid").val(),
+                                    type : "GET",
+                                    success : function(data) {
+                                        var result = "";
+                                        var Str = "";
+                                        if (data != undefined && data != "") {
+                                            result = eval(data);
+                                            Str = result.data[0];
+                                        }
+                                        var datas = [];
+                                        for (var i = 0; i < Str.length; i++) {
+                                            datas[i] = [];
+                                            datas[i].push(Str[i].companyid);
+                                            datas[i].push(Str[i].companyname);
+                                        }
+                                        test6.setData(datas, true); // 设置显示的内容，并更新
+                                        test6.setTitle([ '组织机构ID', '组织机构名称']); // 设置标题
+                                    }
+                                },
+                                callback:function(rowData){
+                                    $("#edit_orgid").val(rowData[0]);
+                                    $("#edit_orgname").val(rowData[1]);
+                                }
+                            });
+
+                        },
+                        yes: function () {
+                            toSaveFun(editopen,table);
+                        },
+                        no:function () {
+                            layer.close(editopen);
+                        }
+                    });
+                }
+
+            },
+            detail:{
+                onclick:function (index,row) {
+                    // index  第几行   // row  该行的数据
+                    showDetail(row);
+                }
+            },
+            seniorSearch: false,
+            columnDefs: [
+                {
+                    render: function (data, type, row) {
+                        return "<a  class='user-link' style='cursor:pointer'>用户</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class='authors-link' style='cursor:pointer'>授权</a>";
+                    },
+                    targets: [7] // 第几列
+                },
+                {
+                    render: function (data, type, row) {
+//                        if (data == undefined || data == "") {
+//                            return "";
+//                        }
+                        if (data == "1") {
+                            return "可用";
+                        } else if (data == "0") {
+                            return "不可用";
+                        } else {
+                            return "";
+                        }
+                    },
+                    targets: [6] // 第几列 6 9 10 11 12
+                }
+
+            ],
+            handleCol:true,
+            search: {placeHolder:"搜索角色编码、角色名、企业编码"},
+            tools: false,
+            // 表格的头部，有多少列，就写多少
+            columns: [{
+                filed: "角色编码",
+                name: "roleCode"
+            }, {
+                filed: "角色名",
+                name: "roleName"
+            }, {
+                filed: "描述",
+                name: "roleDescribe"
+            }, {
+                filed: "企业编码",
+                name: "enterprisecode"
+            }, {
+                filed: "状态",
+                name: "valid"
+            },{
+                filed: "用户授权",
+                name: "valid"
+            }],
+            // 表格获取信息的后台服务器地址
+            url:  "/role/roleList",
+            ajax: function (data, callback, settings) {
+                //ajax配置为function,手动调用异步查询
+                $.ajax({
+                    type: "GET",
+                    url:  "/role/roleList",
+                    data: {},
+                    dataType: "json",
+                    success: function (result) {
+                        var finalData = result.data[0];
+                        //封装返回数据
+                        var returnData = {};
+                        returnData.draw = data.draw; //自行返回draw参数,最好由后台返回
+                        returnData.recordsTotal = finalData.totalCount;
+                        returnData.recordsFiltered = finalData.pageSize;
+                        returnData.data = finalData.results;
+                        //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                        callback(returnData);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        layer.msg("查询失败");
+                    }
+                });
+            }
+        };
+        var table = suneeeUI.seTable("role-manage-table", option);
+
+
+        //查询按钮
+        function openSearchDlg(tableObj){
+            var searchHtml = template("rolemanage_searchpanelTpl",{});
+            var searchWindow = layer.open({
+                type:1,
+                title:"搜索查询",
+                maxmin: true,
+                content:searchHtml,
+                area:["400px","300px"],
+                btn:["搜索","取消"],
+                id: "searchForm",
+                yes:function(){
+                    // 当点击搜索的时候，就使用以下方法进行表格搜索
+                    var searchData = [{
+                        name:"roleCode", //搜索的字段
+                        value:$("#searchForm").find("[name='roleCode']").val() //搜索字段的值
+                    },{
+                        name:"roleName", //搜索的字段
+                        value:$("#searchForm").find("[name='roleName']").val() //搜索字段的值
+                    }];
+                    //调用接口 进行搜索
+                    tableObj.search(searchData);
+                    layer.close(searchWindow)
+                }
+            });
+        }
+
+
+
+        //用户按钮
+        $("#role-manage-table").on("click",".user-link",function(){
+            var index = $(".user-link").index(this);
+            var roleData =  table.option.data[index];
+            $.ajax({
+                type: "GET",
+                url: "/role/userRole",
+                data: {"roleId":parseInt(roleData.roleId)},
+                dataType: "json",
+                error: function (result) {
+                    console.info(e);
+                    layer.msg("请求出错！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1)
+                        openRoleDetail(roleData,result.data[0]);
+                    else
+                        layer.msg(result.msg);
+                }
+            });
+
+        });
+
+
+        function openRoleDetail(roleData,rowData){
+            //可以根据rowData 请求服务器获取该行的详细数据
+            var roleHtml = template("RoleInfoDetail",{});
+            var index_1=layer.open({
+                type:1,
+                content:roleHtml,
+                maxmin: true,
+                area:["600px","400px"],
+                btn:["关闭"],
+                success:function(){
+                    createRoleDetailTb(roleData,rowData);
+
+                },
+                yes:function(){
+                    layer.close(index_1);
+                }
+            });
+        }
+
+        function createRoleDetailTb(roleData,rowData){
+            var tboption = {
+                checkCol:true,
+                border:false,
+                handleCol:false,
+                height:"200px",
+                columns: [{
+                    filed: "用户名",
+                    name: "account"
+                }, {
+                    filed: "名称",
+                    name: "name"
+                }, {
+                    filed: "地址",
+                    name: "address"
+                }, {
+                    filed: "状态",
+                    name: "valid"
+                }, {
+                    filed: "备注",
+                    name: "memo"
+                }, {
+                    filed: "操作",
+                    name: "memo"
+                }],
+                data:rowData,
+                columnDefs: [
+                    {
+                        render: function (data, type, row) {
+                            if (row.valid == "1") {
+                                return "可用";
+                            } else if (row.valid == "0") {
+                                return "不可用";
+                            } else {
+                                return "";
+                            }
+                        },
+                        targets: [5] // 第几列
+                    },{
+                        render: function (data, type, row) { // 格式化 列
+                        // 该列的原始数据是毫秒数
+                        // 转成时间格式再渲染
+                        return "<a  class='user-delete' style='cursor:pointer'>删除</a>";
+                    },
+                        targets: [7] // 第几列
+                }],
+                onInit:function(){
+                    $("#role-detail-table").find(".table-options").hide();
+                    $("#role-detail-table").find(".table").css("width","100%");
+                    $("#userDelete").on("click", function() {
+                        deleteroleTb(roleTb,roleData);
+                    });
+                }
+            }
+            var roleTb = suneeeUI.seTable("role-detail-table", tboption);
+            bindUserClick(tboption,roleData);
+        }
+
+        function bindUserClick(tboption,roleData){
+            //先清除绑定事件
+            $(".user-delete").unbind();
+            $("#userAdd").unbind();
+
+            $(".user-delete").bind("click",function () {
+                var index = $(".user-delete").index(this);
+                var userData_1 = tboption.data[index];
+                deleteUser(userData_1.account,roleData);
+            })
+            $("#userAdd").bind("click",function () {
+                userAdd(roleData);
+            });
+        }
+
+        //批量/多行删除关联用户
+        function deleteroleTb(roleTb,roleData){
+            var rows =  roleTb.getSelectRow(); //获取选择的行
+            if (rows.length > 0){
+                layer.confirm('你确定删除所选记录吗？删除操作不能恢复!', {
+                    btn : [ '确定', '取消' ]
+                    //按钮
+                },function() {
+                    for(var i = 0 ; i < rows.length ; i++) {
+                        var row = rows[i].data;
+                        var account = row.account;
+                        $.ajax({
+                            type: "DELETE",
+                            url:  "/role/deleteUserRole",
+                            data: {"account":account,"roleId":parseInt(roleData.roleId)},
+                            dataType: "json",
+                            error: function (result) {
+                                layer.msg("删除失败");
+                            },
+                            success: function (result) {
+                                if(result.returnCode==1){
+                                    if(i == rows.length){
+                                        layer.msg("删除成功");
+                                        //重新加载数据
+                                        getUserRoleList(roleData);
+                                    }
+                                }else{
+                                    layer.msg(result.msg);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+        //删除用户
+        function deleteUser(account,roleData){
+            layer.confirm("确定删除该条记录吗?", {
+                btn: ['确定', '取消'] //按钮
+            }, function () { // 点击确定的时候
+                $.ajax({
+                    type: "DELETE",
+                    url:  "/role/deleteUserRole",
+                    data: {"account":account,"roleId":parseInt(roleData.roleId)},
+                    dataType: "json",
+                    error: function (result) {
+                        layer.msg("删除失败");
+                    },
+                    success: function (result) {
+                        if(result.returnCode==1){
+                            layer.msg("删除成功");
+                            //重新加载数据
+                            getUserRoleList(roleData);
+                        }else{
+                            layer.msg(result.msg);
+                        }
+
+                    }
+                });
+            });
+        }
+
+        //新增用户
+        function userAdd(roleData){
+            var userRoleInfoDetail = template("addUserRoleTempl", {});
+            var index_adduser = layer.open({
+                type: 1,
+                title: "关联用户信息",
+                maxmin: true,
+                area: ['800px', '200px'], //宽高
+                content: userRoleInfoDetail,
+                success: function () {
+                    var test5 = $(".employee_entry").bigAutocomplete({
+                        width : 'auto',
+                        id : [ 'account', 'name' ],
+                        highlight : true,
+                        ajax : {
+                            url : '/user/userOpList',
+                            type : "GET",
+                            success : function(data) {
+                                var result = eval(data);
+                                var Str = result.data[0];
+                                var datas = [];
+                                for (var i = 0; i < Str.length; i++) {
+                                    datas[i] = [];
+                                    datas[i].push(Str[i].account);
+                                    datas[i].push(Str[i].name);
+                                }
+                                test5.setData(datas, true); // 设置显示的内容，并更新
+                                test5.setTitle([ '用户名', '名称' ]); // 设置标题
+                            }
+                        },
+                        callback:function(rowData){
+                            $("#account").val(rowData[0]);
+                            $("#addUser_name").val(rowData[1]);
+                        }
+                    });
+                },
+                btn: ["确定","取消"],
+                yes: function () {
+                    var account=$("#account").val();
+                    var userName=$("#addUser_name").val();
+                    //输入校验
+                    if(account==""){
+                        layer.msg("请输入关联账号!");
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url:  "/role/saveUserRole",
+                        data: {"account":account,
+                            "roleId":parseInt(roleData.roleId),
+                            "userName":userName
+                        },
+                        dataType: "json",
+                        error: function (result) {
+                            layer.msg("保存出错！");
+                        },
+                        success: function (result) {
+                            if(result.returnCode==1){
+                                layer.msg("保存成功！");
+                                layer.close(index_adduser);
+                                //重新加载数据
+                                getUserRoleList(roleData);
+                            }else{
+                                layer.msg(result.msg);
+                            }
+                        }
+                    });
+
+                },
+                no:function () {
+                    layer.close(index_adduser);
+                }
+            });
+
+
+
+        }
+
+        function getUserRoleList(roleData) {
+            $.ajax({
+                type: "GET",
+                url: "/role/userRole",
+                data: {"roleId":parseInt(roleData.roleId)},
+                dataType: "json",
+                error: function (result) {
+                    console.info(e);
+                    layer.msg("请求出错！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1)
+                        createRoleDetailTb(roleData,result.data[0]);
+                    else
+                        layer.msg(result.msg);
+                }
+            });
+
+        }
+
+
+
+
+        //授权按钮
+        var menuIdArr=null;
+        $("#role-manage-table").on("click",".authors-link",function(){
+            var index = $(".authors-link").index(this);
+            var rowData =  table.option.data[index];
+            openRoleauthors(rowData);
+        });
+
+        function openRoleauthors(rowData){
+            //可以根据rowData 请求服务器获取该行的详细数据
+            var authorsHtml = template("Roleauthors",{});
+            layer.open({
+                type:1,
+                content:authorsHtml,
+                maxmin: true,
+                area:["600px","600px"],
+                //   btn:["确定","取消"],
+                success:function(){
+                    // 在这里对树进行初始化
+                    createRoleTree(rowData);
+                }
+
+            });
+        }
+
+        Array.prototype.removeValue = function (val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        } ;
+
+        var settingleft = {
+            treeNodeKey: "menuId",
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "menuId",
+                    pIdKey: "parentMenuId"
+                },
+                key:{
+                    name:"menuName"
+                }
+            },
+            check:{
+                enable: true,
+                chkStyle:"checkbox"
+            }, callback:{
+                onCheck:onCheck
+            }
+        };
+
+        var settingright = {
+            treeNodeKey: "operationId",
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "menuId",
+                    pIdKey: "parentMenuId"
+                },
+                key:{
+                    name:"menuName"
+                }
+            },
+            check:{
+                enable: true,
+                chkStyle:"checkbox"
+            },callback:{
+                onCheck:onOpCheck
+            }
+        };
+
+
+        function createRoleTree(rowData){
+            ajaxGetMenu(rowData);
+            // 弹窗的按钮点击事件
+            initRoleAuthorBtnEvent(rowData);
+        }
+
+
+
+        function onCheck(e,treeId,treeNode){
+            var treeObj=$.fn.zTree.getZTreeObj("menuTreeId");
+            var nodes=treeObj.getCheckedNodes(true);
+            menuIdArr=new Array();
+            for(var i=0;i<nodes.length;i++){
+
+                menuIdArr.push(nodes[i].menuId);
+            }
+        }
+
+        var menuAndOpArr=null;
+        function onOpCheck(e,treeId,treeNode){
+            var treeObj=$.fn.zTree.getZTreeObj("opTreeId");
+            var nodes=treeObj.getCheckedNodes(true);
+            menuAndOpArr=new Array();
+            for(var i=0;i<nodes.length;i++){
+                if(nodes[i].parentMenuId!=null&&nodes[i].parentMenuId!=0){
+                    var obj=new Object();
+                    obj.menuId=nodes[i].parentMenuId;
+                    obj.operationId=nodes[i].menuId;
+                    menuAndOpArr.push(obj)
+                }
+
+            }
+
+        }
+
+        //勾选的左边菜单节点
+        function getMenuCheck(){
+            var treeObj=$.fn.zTree.getZTreeObj("menuTreeId");
+            var nodes=treeObj.getCheckedNodes(true);
+            menuIdArr=new Array();
+            for(var i=0;i<nodes.length;i++){
+                menuIdArr.push(nodes[i].menuId);
+            }
+        }
+
+        //勾选的右边操作节点
+        function getOptCheck(){
+            var treeObj=$.fn.zTree.getZTreeObj("opTreeId");
+            var nodes=treeObj.getCheckedNodes(true);
+            menuAndOpArr=new Array();
+            for(var i=0;i<nodes.length;i++){
+                if(nodes[i].parentMenuId!=null&&nodes[i].parentMenuId!=0){
+                    var obj=new Object();
+                    obj.menuId=nodes[i].parentMenuId;
+                    obj.operationId=nodes[i].menuId;
+                    menuAndOpArr.push(obj)
+                }
+
+            }
+        }
+
+        function cancelMenuSelecte(id){
+
+            var treeObj=$.fn.zTree.getZTreeObj("menuTreeId");
+            treeObj.setting.check.autoCheckTrigger=false;
+            var nodes = treeObj.getCheckedNodes(true);
+            if (nodes.length>0) {
+                for(var i=0;i<nodes.length;i++){
+                    var node=treeObj.getNodeByParam("menuId",nodes[i].menuId);
+                    treeObj.checkNode(node, false, false, false);
+                    if(menuIdArr!=null){
+                        menuIdArr.removeValue(node.menuId)
+                    }
+                }
+
+            }
+
+        }
+
+        function cancelOptSelecte(id){
+
+            var treeObj=$.fn.zTree.getZTreeObj("opTreeId");
+            treeObj.setting.check.autoCheckTrigger=false;
+            var nodes = treeObj.getCheckedNodes(true);
+            if (nodes.length>0) {
+
+                for(var i=0;i<nodes.length;i++){
+
+                    var node=treeObj.getNodeByParam("menuId",nodes[i].menuId);
+
+                    treeObj.checkNode(node, false, false, false);
+                    if(menuAndOpArr!=null){
+                        menuAndOpArr.removeValue(node.menuId)
+                    }
+                }
+
+            }
+
+        }
+
+        //初始化左边树
+        function ajaxGetMenu(rowData){
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                data: {"roleId":parseInt(rowData.roleId)},
+                url: "/role/getMenuListForRoleByRoleId",
+                error:function(data){
+                    alert("系统异常！");
+                },
+                success:function(result){
+                    if(result.returnCode==1){
+                        $.fn.zTree.init($("#menuTreeId"), settingleft, result.data);
+                        getMenuCheck();
+                        ajaxGetOpt(rowData);
+                    };
+                }
+            });
+        }
+
+
+        //初始化右边树
+        function ajaxGetOpt(rowData){
+            debugger;
+            var b=true;
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                data: {"menuIds":menuIdArr.join(","),"roleId":rowData.roleId},
+                url: "/role/getOptListForRole",
+                error:function(data){
+                    b=false;
+                    alert("数据请求异常，请重试！");
+                },
+                success:function(result){
+                    if(result.returnCode==1){
+                        $.fn.zTree.init($("#opTreeId"), settingright, result.data);
+                        getOptCheck();
+                    };
+                }
+            });
+            return b;
+        }
+
+
+
+
+        function initRoleAuthorBtnEvent(rowData){
+            $("#menuRoleSave").on("click",function () {
+                submit(rowData);
+            });
+            $("#menu-commit").on("click",function(){
+                getMenuCheck();
+                ajaxGetOpt(rowData);
+            });
+            $("#menu-cancel").on("click",function(){
+                cancelMenuSelecte("menuTreeId");
+            });
+            $("#func-cancel").on("click",function(){
+                cancelOptSelecte("opTreeId");
+            });
+        }
+
+
+        //提交
+        function submit(rowData){
+            var roleId=parseInt(rowData.roleId);
+            var menuIdArrstr=JSON.stringify(menuIdArr);
+            var menuAndOpArrstr=JSON.stringify(menuAndOpArr);
+            if(menuIdArr.length==0){
+                layer.msg("请勾选菜单权限！");
+                return false;
+            }
+
+
+            $.ajax({
+                url : "/role/saveMenuOpt",
+                dataType : "json", //传参的数据类型
+                type : "POST",
+                data : {roleId:roleId,menuIds:menuIdArrstr,menuAndOpArr:menuAndOpArrstr},
+                error : function(data) { //若Ajax处理失败后返回的信息
+                    layer.msg("新增失败"+data.msg);
+                },
+                success : function(data) { //若Ajax处理成功后返回的信息
+                    if(parseInt(data.returnCode)==0){
+                        layer.msg("修改失败:"+data.msg);
+                    }else{
+                        layer.msg("修改成功！");
+                        layer.closeAll();
+                    }
+                }
+            });
+        }
+
+        //详情弹窗
+        function showDetail(row) {
+            var roleInfoDetail = template("system-roleInfoDetail", row);
+            var index = layer.open({
+                type: 1,
+                title: "角色详细信息",
+                maxmin: true,
+                area: ['800px', '400px'], //宽高
+                content: roleInfoDetail,
+                success: function () {
+                    var valid=$("#hidden_detail_valid").val();
+                    $("#detail_valid").val(valid);
+                    $("#detail_valid").attr("readonly",true);
+                    var roleType=$("#hidden_detail_roleType").val();
+                    $("#detail_roleType").val(roleType);
+                    $("#detail_roleType").attr("readonly",true);
+                },
+//            btn: ["确定"],
+                yes: function () {
+                    layer.close(index);
+                }
+            });
+        }
+
+
+
+        //编辑保存
+        function toSaveFun(layerIndex,table) {
+            var d = {};
+            var t = $('#editRoleDlg').find("form").serializeArray();
+            $.each(t, function () {
+                d[this.name] = this.value;
+            });
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url:  "/role/roleModify",
+                data: JSON.stringify(d),
+                dataType: "json",
+                error: function (result) {
+                    layer.msg("处理失败！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("保存成功！");
+                        layer.close(layerIndex);
+                        table.reload();
+                    }else{
+                        layer.msg(result.msg);
+                        layer.close(layerIndex);
+                    }
+                }
+            });
+        }
+
+        //左上角编辑按钮
+        function toEidtFun(tableObj) {
+            var rows = tableObj.getSelectRow();
+            if (rows.length == 1) {
+                var row = rows[0].data ;
+                var html = template("editRoleTempl",row);
+
+                var editopen = layer.open({
+                    type: 1,
+                    title: "角色信息编辑",
+                    maxmin: true,
+                    area: ['800px', '400px'], //宽高
+                    content: html,
+                    btn:["确定","取消"],
+                    success: function () {
+                        var valid=$("#hidden_edit_valid").val();
+                        $("#edit_valid").val(valid);
+                        var roleType=$("#hidden_edit_roleType").val();
+                        $("#edit_roleType").val(roleType);
+                        if(enterpriseLevel<100){
+                            $("#edit_roleType").attr("readonly",true);
+                        }
+
+                    },
+                    yes: function () {
+                        toSaveFun(editopen,table);
+                    },
+                    no:function () {
+                        layer.close(editopen);
+                    }
+                });
+            }else{
+                layer.alert("请选择1条记录！");
+            }
+        }
+
+        //批量/多行删除
+        function deletetable(table) {
+            var rows =  table.getSelectRow(); //获取选择的行
+            if (rows.length > 0){
+                layer.confirm('你确定删除所选记录吗？删除操作不能恢复!', {
+                    btn : [ '确定', '取消' ]
+                    //按钮
+                },function() {
+                    var roleIds = "";
+                    for(var i = 0 ; i < rows.length ; i++) {
+                        var row = rows[i].data;
+                        roleIds += row.roleId + ",";
+                    }
+                    $.ajax({
+                        type: "DELETE",
+                        dataType: "json",
+                        data: roleIds,
+                        url:  "/role/roleBatchDelete",
+                        success: function (result) {
+                            layer.msg(result.msg);
+                            table.reload();
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {}
+                    });
+                });
+            }else{
+                layer.alert("请选择删除数据！");
+            }
+        }
+
+        //删除一行
+        function deleteOneFun(row,table) {
+            layer.confirm("确定删除该条记录吗?", {
+                btn: ['确定', '取消'] //按钮
+            }, function () { // 点击确定的时候
+                $.ajax({
+                    type: "DELETE",
+                    dataType: "json",
+                    data: "" + row.roleId,
+                    url:  "/role/roleBatchDelete",
+                    success: function (result) {
+                        layer.msg(result.msg);
+                        table.reload();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {}
+                });
+            });
+        }
+
+
+    });
+</script>

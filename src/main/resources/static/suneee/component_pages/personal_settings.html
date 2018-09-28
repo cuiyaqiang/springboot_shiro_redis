@@ -1,0 +1,207 @@
+<div class="newpage-con">
+    <div class="row block">
+        <div class="col-md-2"></div>
+        <form action="index.html" method="post" enctype="multipart/form-data" class="col-md-8 form-horizontal" onsubmit="return false;">
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">请输入原密码：</label>
+                    <div class="col-md-7">
+                        <input type="password" id="init_password" name="init_password" class="form-control" placeholder="请输入原密码..">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">请输入新密码：</label>
+                    <div class="col-md-7">
+                        <input type="password" id="new_password_1" name="new_password_1" class="form-control" placeholder="请输入新密码..">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">确认新密码：</label>
+                    <div class="col-md-7">
+                        <input type="password" id="new_password_2" name="new_password_2" class="form-control" placeholder="确认新密码..">
+                    </div>
+                </div>
+
+
+
+                <div class="form-group form-actions">
+                    <div class="col-md-7 col-md-offset-3">
+                        <button type="submit" id="update_password" class="btn btn-sm btn-primary">修改密码</button>
+                    </div>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</div>
+
+
+
+
+<div style="width: 100%;">
+        <div id="personal-settings-editUserDlg" class="from_table_con">
+            <form role="form">
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <input type="hidden" name="userId" id="userId" value=""/>
+                        <th>账户<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="account" id="account" readonly="true" value=""/></td>
+                        <th>姓名<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="name" id="name" readonly="true" value=""/></td>
+                    </tr>
+                    <tr>
+                        <th>地址</th>
+                        <td><input type="text" class="form-control" name="address"  id="address" value=""/></td>
+                        <th>邮箱<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="eMail" id="eMail" value=""/></td>
+                    </tr>
+                    <tr>
+                        <th>手机号码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="telphone" id="telphone" value=""/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+</div>
+<div class="form-group form-actions">
+    <div class="col-md-7 col-md-offset-3">
+        <button type="submit" id="saveBtn" class="btn btn-sm btn-primary">保存</button>
+    </div>
+</div>
+<!--编辑弹窗结束-->
+
+<script>
+
+	$(function () {
+        initData();
+
+        $("#saveBtn").bind("click",function () {
+            saveData();
+        });
+
+        //绑定修改密码按钮点击事件
+        $("#update_password").bind("click",function () {
+            updatePassword();
+        });
+        //保存修改的密码
+        function updatePassword() {
+            var originalPassword=$("#init_password").val();
+            var newPassword1=$("#new_password_1").val();
+            var newPassword2=$("#new_password_2").val();
+            //输入校验
+            if(originalPassword==""){
+                layer.msg("请输入原密码!");
+                return;
+            }
+            if(newPassword1==""){
+                layer.msg("请输入新密码!");
+                return;
+            }
+            if(newPassword2==""){
+                layer.msg("请再次输入新密码!");
+                return;
+            }
+            if(originalPassword == newPassword1){
+                layer.msg("新密码与原密码相同，请重新输入!");
+                return;
+            }
+            if(newPassword2 != newPassword1){
+                layer.msg("密码不一致，请重新输入!");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url:  "/user/updateUserPassword",
+                data: {"originalPassword":originalPassword,
+                    "newPassword":newPassword1
+                },
+                dataType: "json",
+                error: function (result) {
+                    layer.msg("保存出错！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("修改密码成功！");
+                        //修改成功之后重新定位到登录页面
+                        top.location = "../login.html";
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        }
+    })
+
+    function initData() {
+        $.ajax({
+            type: "GET",
+            url: "/user/getUserInfo",
+            data: {},
+            dataType: "json",
+            error: function (result) {
+                console.info(e);
+                layer.msg("请求出错！");
+            },
+            success: function (result) {
+                if(result.returnCode==1){
+                    debugger;
+                    $("#userId").val(result.data[0].userId);
+                    $("#account").val(result.data[0].account);
+                    $("#name").val(result.data[0].name);
+                    $("#address").val(result.data[0].address);
+                    $("#eMail").val(result.data[0].eMail);
+                    $("#telphone").val(result.data[0].telphone);
+
+                }else{
+                    layer.msg("请求出错！");
+                }
+
+            }
+        });
+    }
+
+
+
+
+    function saveData() {
+	    debugger;
+        var d = {};
+        var t = $('#personal-settings-editUserDlg').find("form").serializeArray();
+        $.each(t, function () {
+            d[this.name] = this.value;
+        });
+        //数据校验
+        if(d["eMail"]==""&&d["telPhone"]==""){
+            layer.msg("请输入邮箱或者手机号码！");
+            return false;
+        }
+
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url:  "/user/userModify",
+            data: JSON.stringify(d),
+            dataType: "json",
+            error: function (result) {
+                layer.msg("处理失败！");
+            },
+            success: function (result) {
+                if(result.returnCode==1){
+                    layer.msg("保存成功！");
+                }else{
+                    layer.msg(result.msg);
+                }
+            }
+        });
+    }
+    
+    
+    
+    
+    
+    
+    
+
+
+</script>

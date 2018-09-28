@@ -1,0 +1,115 @@
+<link href="../css/suneee.css" rel="stylesheet" />
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/iconfont.css" rel="stylesheet" />
+
+
+<div style="padding-top: 10px;display: flex">
+	<!--头部end-->
+	<!--增值服务-->
+	<div class="value_add_con">
+		<div class="row kt_container">
+
+		</div>
+
+	</div>
+	<!--增值服务end-->
+</div>
+</div>
+<script type="text/javascript">
+	$(function () {
+		var sendData = {
+			"sessionId": GetQueryString("sessionId"),
+			"serviceCode": topname
+		}
+
+		// // 获取菜单和框体内容
+		// $.ajax({
+		// 	type: "get",
+		// 	url: httpurl + "/businessCenter/getUserMenuTree",
+		// 	data: sendData,
+		// 	dataType: "json",
+		// 	success: function (response) {
+		// 		if (response.returnCode == 1)
+		// 			init(response);
+		// 	}
+		// });
+		// 菜单在外层就请求了
+		init(topUrlObj);
+
+		// 初始化菜单和框体内容
+		function init(response) {
+			var indexnum = 0;
+			// while ($(".col-md-6").length < 6) {
+				response.data[0][indexnum].subMenu.forEach(function (element) {
+				    if(element.iconClass==""||element.iconClass==null)
+                        element.iconClass="icon se se-quanbudingdan";
+					var html = ['<div class="col-md-4"   title=' + element.menuId + '>',
+						'					<div class="function_box">',
+						'						<div class="function_bj bg_pcblue">',
+						'							<div class="function_top">',
+						'								<i class="'+element.iconClass+'"></i>',
+						'								<span>版本: 1.0&nbsp;&nbsp;发布: 2017.06.05</span>',
+						'							</div>',
+						'							<h1>' + element.title + '<span></span></h1>',
+						'							<div class="function_footer">',
+						'								<div class="pull-left"><i class="icon iconfont icon-suneee"></i></div>',
+						'								<div class="icon_con">',
+						'									<i class="icon iconfont icon-shouji"></i><i class="icon iconfont icon-diannao"></i><i name=' +
+						element.menuId + ' class="icon iconfont icon-wujiaoxing"></i>',
+						'								</div>',
+						'							</div>',
+						'						</div>',
+						'					</div>',
+						'				</div>'
+					].join("");
+					$(".kt_container").append(html);
+					// <a href="#" data-iframe="undefined" data-addtab="特色商品资源位配置" data-url="http://con.vr.weilian.cn:8112/static/featured_list.html?erp=true">特色商品资源位配置</a>
+					// zhideng
+				}, this);
+			// }
+			
+			$("body").on("click", ".icon-wujiaoxing", function () {
+				var thisself = $(this);
+				// 获取操作
+				var data = {
+					sessionId: GetQueryString("sessionId"),
+					menuId: $(this).attr("name")
+				}
+				$.ajax({
+					type: "POST",
+					url: httpurl + "/system/stickMenu",
+					data: data,
+					dataType: "json",
+					success: function (response) {
+						if (response.returnCode == 1) {
+							var par = thisself.parents(".col-md-4").parent();
+							var self = thisself.parents(".col-md-4").remove()
+							par.prepend(self)
+						}
+					}
+				});
+				return false;
+			})
+			$("body").on("click", ".col-md-4", function () {
+				var clicktitle = $(this).attr("title")
+				$(".sidebar-nav a").each(function () {
+					if ($(this).attr("data-addtab") == clicktitle) {
+						$(this).click();
+						return;
+					}
+				})
+
+			})
+		}
+
+
+
+	});
+
+	function GetQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return unescape(r[2]);
+		return null;
+	}
+</script>

@@ -1,0 +1,156 @@
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="simble_table">
+
+        </div>
+    </div>
+</div>
+<div class="from_table_con">
+	<form id="" role="form">
+	<table cellpadding="0" cellspacing="0" class="from_table">
+		<tr>
+			<th><font class="required">*</font>标题：</th>
+			<td><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+			<th><font class="required">*</font>长标题标题：</th>
+			<td><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+			<th><font class="required">*</font>标题：</th>
+			<td><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+		</tr>
+		<tr>
+			<th><font class="required">*</font>长标题标题长标题标题：</th>
+			<td><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+			<th><font class="required">*</font>长标题标题：</th>
+			<td><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+			<th><font class="required">*</font>长标题标题：</th>
+			<td><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+		</tr>
+		<tr>
+			<th>长标题标题：</th>
+			<td colspan="3"><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+			<th>长标题标题：</th>
+			<td><input type="text" class="form-control" name="" value=""  disabled="disabled"/></td>
+		</tr>
+	</table>
+	</form>
+</div>
+<script id="detailTempl" type="text/html">
+<div class="newpage-con">
+	<div class="row clearfix">
+		<div class="col-md-12">
+				<form id="signupForm" class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="account" class="col-md-4 control-label">部门名称：</label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" name="" id="account" value="{{dept}}" disabled="disabled"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label  class="col-md-4 control-label">部门编号：</label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" name="{{code}}" value="{{code}}"  disabled="disabled"/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label   class="col-md-4 control-label">部门类型：</label>
+						<div class="col-md-6">
+							<input type="text" class="form-control"  value="{{type}}"  disabled="disabled"/>
+						</div>
+					</div>
+
+
+
+					<div class="form-group">
+						<label class="col-md-4 control-label">属性：</label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" name="" value="{{attr}}" disabled="disabled"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="lastname" class="col-md-4 control-label">使用状态：</label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" name="" id="lastname" value="{{status}}" disabled="disabled"/>
+						</div>
+					</div>
+				</form>
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="editTempl" type="text/html">
+    <div>
+        编辑
+    </div>
+</script>
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        //表格的属性对象，用于初始化表格的设置
+        var option = {
+            // 新增配置
+            add: {
+                url: "",//新增的地址
+                formList: [{
+                    filed: "部门名称：",
+                    name: "dept"
+                }, {
+                    filed: "部门编号：",
+                    name: "code"
+                }]
+            },
+			detail:{
+                url:"", // 查看详情地址
+                formList:[{
+                    filed: "部门名称：",
+                    name: "dept"
+				},{
+                    filed: "部门编号：",
+                    name: "code"
+                }]
+			},
+            seniorSearch:{ // 高级搜索配置
+                formList:[{
+                    filed: "部门名称：",
+                    name: "dept"
+                },{
+                    filed: "部门编号：",
+                    name: "code"
+                }]
+			},
+            edit: true,
+            del: true,
+            search:true,
+            tools:true,
+            // 表格的头部，有多少列，就写多少
+            columns: [{
+                filed: "部门名称",
+                name: "dept"
+            }, {
+                filed: "部门编号",
+                name: "code"
+            }, {
+                filed: "部门类型",
+                name: "type"
+            }, {
+                filed: "上级部门",
+                name: "super"
+            }, {
+                filed: "属性",
+                name: "attr"
+            }, {
+                filed: "使用状态",
+                name: "status"
+            }],
+            // 表格获取信息的后台服务器地址
+            url: "http://192.168.5.202:8081/"
+        }
+        var table = suneeeUI.seTable("simble_table", option);
+        console.log(table.rows('.table_selected').data());
+    });
+</script>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="shortcut icon" href="http://sunui.scn.weilian.cn:12809/se/demo/img/icon/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="http://sunui.scn.weilian.cn:12809/se/demo/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="http://sunui.scn.weilian.cn:12809/se/style/css/bootstrap/fixedColumns.bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://sunui.scn.weilian.cn:12809/se/demo/css/themes.css">
+	<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<script src="http://sunui.scn.weilian.cn:12809/se/src/plugin/modernizr/modernizr.min.js" type="text/javascript" charset="utf-8"></script>
+	<link href="../css/bootstrap.css" rel="stylesheet" />
+	<link href="../css/suneee.css" rel="stylesheet" />
+	<link href="../css/fonts.css" rel="stylesheet">
+	<link href="../css/iconfont.css" rel="stylesheet" />
+
+</head>
+
+<body>
+	<div id="page_con" style="position: absolute;width: 100%;height: 100vh;left: 260px;">
+		<!--头部-->
+		<header class="header_title" style="left: 260px;">
+			<div class="burger">
+				<!--menu-opened-->
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+			<div class="function_title"></div>
+		</header>
+		<div style="height: 5em;"></div>
+		<!--头部end-->
+		<!--工作日志-->
+		<div id="showDiv">
+
+		</div>
+		<!--增值服务end-->
+	</div>
+	<script src="../js/jquery.js"></script>
+	<script src="http://sunui.scn.weilian.cn:12809/se/src/plugin/jQuery/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://sunui.scn.weilian.cn:12809/se/demo/js/plugins_fix.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://sunui.scn.weilian.cn:12809/se/demo/build/main.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://sunui.scn.weilian.cn:12809/se/src/plugin/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+
+	<script src="http://sunui.scn.weilian.cn:12809/se/src/plugin/echarts/echarts.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://sunui.scn.weilian.cn:12809/se/src/plugin/echarts/theme/macarons.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://sunui.scn.weilian.cn:12809/se/src/plugin/echarts/theme/blue.js" type="text/javascript" charset="utf-8"></script>
+
+	<script src="http://sunui.scn.weilian.cn:12809/se/demo/build/se.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<!-- <script src="http://scn.vr.weilian.cn:30917/static/js/dictionaryInit.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="http://scn.vr.weilian.cn:30917/static/js/style.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/url.js"></script>
+	<script type="text/javascript" src="../js/suneee-side-nav.js"></script>
+	<script type="text/javascript">
+		// 侧边栏默认初始化
+		var nav = new suneeeSideNav();
+
+		$(function () {
+			$("#showDiv").load(GetQueryString("url"));
+			$(".function_title").text(GetQueryString("titlename"))
+			var sendData = {
+				"sessionId": GetQueryString("sessionId"),
+				"serviceCode": GetQueryString("name")
+			}
+
+			// 获取菜单和框体内容
+			$.ajax({
+				type: "get",
+				url: httpurl + "/businessCenter/getUserMenuTree",
+				data: sendData,
+				dataType: "json",
+				success: function (response) {
+					if (response.returnCode == 1)
+						init(response);
+				}
+			});
+
+
+			// 初始化菜单和框体内容
+			function init(response) {
+				nav.init(response.data[0][0].subMenu);
+			}
+		});
+
+		function GetQueryString(key) {
+			  var reg = new RegExp("(^|&)"+key+"=([^&]*)(&|$)");
+       	 	var result = window.location.search.substr(1).match(reg);
+       	 	return result?decodeURIComponent(result[2]):null;
+		}
+	</script>
+</body>
+
+</html>

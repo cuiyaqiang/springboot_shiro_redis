@@ -1,0 +1,241 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div id="operation-manage-table">
+
+        </div>
+    </div>
+</div>
+
+<!-- 详情弹窗开始-->
+<script id="OperationInfoDetail" type="text/html">
+    <div class="col-xs-12">
+        <div id="operation-detail-table">
+
+        </div>
+    </div>
+</script>
+<!-- 详情弹窗结束-->
+
+
+<script type="text/javascript">
+    $(function () {
+        //表格的属性对象，用于初始化表格的设置
+        var option = {
+            search: true,
+            tools: false,
+            // 表格的头部，有多少列，就写多少
+            columns: [{
+                filed: "菜单ID",
+                name: "menuId"
+            }, {
+                filed: "菜单名称",
+                name: "menuName"
+            },{
+                filed: "备注",
+                name: "memo"
+            }],
+            columnDefs: [{ // 渲染列 格式化
+                render: function (data, type, row) {  // 格式化 列
+                    return "<a  class='edit-operation' style='cursor:pointer'>编辑操作功能点</a>";
+                },
+                targets: [5] // 第几列
+            }],
+            // 表格获取信息的后台服务器地址
+            url: "/menu/menusListForOpt",
+            ajax: function (data, callback, settings) {
+                //ajax配置为function,手动调用异步查询
+                $.ajax({
+                    type: "GET",
+                    url: "/menu/menusListForOpt",
+                    data: {},
+                    dataType: "json",
+                    success: function (result) {
+                        layer.msg("接口调用成功");
+                        var finalData = result.data[0];
+                        //封装返回数据
+                        var returnData = {};
+                        returnData.draw = data.draw;//自行返回draw参数,最好由后台返回
+                        returnData.recordsTotal = finalData.totalCount;
+                        returnData.recordsFiltered = finalData.pageSize;
+                        returnData.data = finalData.results;
+                        //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                        callback(returnData);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        layer.msg("查询失败");
+                    }
+                });
+            }
+        };
+        var table = suneeeUI.seTable("operation-manage-table", option);
+        bindClick(table.option);
+
+
+
+        function bindClick(option){
+            $("#operation-manage-table").on("click",".edit-operation",function () {
+                var index = $(".edit-operation").index(this);
+                var data = option.data[index];
+                editOperation(data);
+            });
+        }
+
+
+        function editOperation(data){
+            $.ajax({
+                type: "GET",
+                url:  "/menu/modOpt",
+                data: {"menuId":data.menuId},
+                dataType: "json",
+                error: function (result) {
+                    layer.msg("处理失败");
+                },
+                success: function (result) {
+                    if(result.returnCode==1){
+                        var operationHtml = template("OperationInfoDetail",{});
+                        var index_1=layer.open({
+                            type:1,
+                            content:operationHtml,
+                            area:["600px","400px"],
+                            btn:["确定"],
+                            success:function(){
+                                createOperationDetailTb(result.data[0]);
+                            },
+                            yes:function(){
+                                saveOpt(data,result.data[0]);
+                                layer.close(index_1);
+                            }
+                        });
+                    }else{
+                        layer.msg(result.msg);
+                    }
+
+                }
+            });
+
+        }
+
+
+        function createOperationDetailTb(data){
+            var tboption = {
+                checkCol:true,
+                border:false,
+                handleCol:false,
+                height:"200px",
+                pageLength:30,
+                columns: [{
+                    filed: "功能名称",
+                    name: "name"
+                }, {
+                    filed: "功能代码",
+                    name: "code"
+                }, {
+                    filed: "功能方法",
+                    name: "method"
+                }],
+                data:data,
+                onInit:function(){
+                    $("#operation-detail-table").find(".table-options").hide();
+                }
+            }
+            var operationTb = suneeeUI.seTable("operation-detail-table", tboption);
+
+
+            //初始化完成后，遍历表格，选中checkbox。
+            $("#operation-detail-table").find("tbody").find("tr").each(function () {
+                var code = $(this).children().eq(3)["0"].innerHTML;
+                var flag=false;
+                $.each(data ,function () {
+                    if(this["code"]==code){
+                        if(this["checked"]==true){
+                            flag=true;
+                        }
+                    }
+                })
+                if(flag){
+                    $(this).find("input:checkbox").prop("checked",true);
+                }
+
+            });
+
+
+            $("#operation-detail-table").find(".table-th-checkbox").change(function () {
+                var check=$(this)["0"].checked;
+                if(check){
+                    $("#operation-detail-table").find("tbody").find("tr").each(function () {
+                        debugger;
+                        $(this).find("input:checkbox").prop("checked",true);
+                        debugger;
+                    })
+                }else{
+                    $("#operation-detail-table").find("tbody").find("tr").each(function () {
+                        debugger;
+                        $(this).find("input:checkbox").prop("checked",false);
+                        debugger;
+                    })
+                }
+            });
+
+        }
+        
+        //操作保存
+        function saveOpt(data,result) {
+            var optIds="";
+            $("#operation-detail-table").find("tbody").find("tr").each(function () {
+                var check=$(this).find("input:checkbox")["0"].checked;
+                if(check){
+                    var code = $(this).children().eq(3)["0"].innerHTML;
+                    var optId="";
+                    $.each(result ,function () {
+                        if(this["code"]==code){
+                            optId=this["operationId"];
+                        }
+
+                    })
+                    optIds=optIds+optId+",";
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                url:  "/menu/saveOpt",
+                data: {"menuId":data.menuId,"optIds":optIds},
+                dataType: "json",
+                error: function (result) {
+                    layer.msg("处理失败");
+                },
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("处理成功！");
+
+                    }else{
+                        layer.msg(result.msg);
+                    }
+
+                }
+            });
+
+            
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+
+
+
+
+</script>

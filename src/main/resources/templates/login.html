@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <script type="text/javascript" src="/js/jquery1.8.3.min.js"></script>
+
+</head>
+<body>
+<form id="login">
+    <input type="text" name="username" id="username"/> 用户名
+    <input type="text" name="password" id="password"/> 密码
+    <input type="submit" id="submitBtn" value="提交"/>
+    <input type="button" id="test" value="测试"/>
+</form>
+<script type="text/javascript">
+    $(function(){
+        $("#submitBtn").on("click",login);
+        function login(){
+            $.ajax({
+                type: "GET",
+                url: "/login",
+                data: {
+                    "username": $("#username").val(),
+                    "password": $("#password").val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    console.log("菜单数据："+data);
+                    if (data.code == "1"){
+                        alert(data.msg);
+                        window.location = "localhost:8081/index.html";
+                    }else {
+                        window.location = "localhost:8081/login.html";
+                    }
+
+                },error:function () {
+
+                }
+            });
+        }
+    })
+
+</script>
+</body>
+</html>

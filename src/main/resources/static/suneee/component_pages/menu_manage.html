@@ -1,0 +1,548 @@
+<div class="newpage-con">
+    <div class="block">
+        <div>
+            <a href="javascript:void(0); openAll();">展开</a> | <a href="javascript:void(0); closeAll();">缩回</a>
+        </div>
+        <div>
+            系统功能列表[<a href="javascript:void(0);" onclick="initSave(0)">新增</a>]
+        </div>
+        <ul id="menuTree" class="ztree"></ul>
+    </div>
+</div>
+
+
+<!--新增弹窗开始-->
+<script id="addMenuTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="addMenuDlg" class="from_table_con">
+            <form id="addForm" role="form">
+                <label id="parentMenuNameLable"></label>
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>功能名称<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" id="add_menuName" name="menuName" /></td>
+                        <th>功能链接</th>
+                        <td><input type="text" class="form-control" name="pageLink" /></td>
+                    </tr>
+                    <tr>
+                        <th>流程ID</th>
+                        <td><input type="text" class="form-control" name="flowId" /></td>
+                        <th>末级菜单</th>
+                        <td>
+                            <select name="isMenu" class="form-control">
+                                <option value="1">否</option>
+                                <option value="0">是</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>是否可用</th>
+                        <td>
+                            <select name="valid" class="form-control">
+                                <option value="1">可用</option>
+                                <option value="0">不可用</option>
+                            </select>
+                        </td>
+                        <th>功能类型</th>
+                        <td>
+                            <select name="resType" class="form-control">
+                                <option value="URL">URL</option>
+                                <option value="FUNCTION">方法</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>备注</th>
+                        <td><input type="text" class="form-control" name="memo" /></td>
+                        <th>功能编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" id="add_menuDescribe" name="menuDescribe" /></td>
+                    </tr>
+                    <tr>
+                        <th>序号<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" id="add_innerOrder" name="innerOrder" /></td>
+                        <th>菜单级别</th>
+                        <td>
+                            <select name="level" class="form-control">
+                                <option value="1">普通企业</option>
+                                <option value="100">平台企业</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>菜单样式</th>
+                        <td><input type="text" class="form-control" id="add_menuClass" name="menuClass" /></td>
+                        <th>iframe加载</th>
+                        <td>
+                            <select name="iframe" class="form-control">
+                                <option value="false">否</option>
+                                <option value="true">是</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+
+    </div>
+</script>
+<!--新增弹窗结束-->
+
+
+
+<!--编辑弹窗开始-->
+<script id="editMenuTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="editMenuDlg" class="from_table_con">
+            <form id="editForm" role="form">
+                <input type="hidden" name="menuId" value="{{menuId}}"/>
+                <input type="hidden" name="parentMenuId" value="{{parentMenuId}}"/>
+                <input type="hidden" name="leftShow" value="{{leftShow}}"/>
+                <label id="eidtparentMenuNameLable"></label>
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>功能名称<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" id="edit_menuName"name="menuName" value="{{menuName}}"/></td>
+                        <th>功能链接</th>
+                        <td><input type="text" class="form-control" name="pageLink" value="{{pageLink}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>流程ID</th>
+                        <td><input type="text" class="form-control" name="flowId" value="{{flowId}}"/></td>
+                        <th>末级菜单</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_isMenu" value="{{isMenu}}"/>
+                            <select id="edit_isMenu" name="isMenu" class="form-control">
+                                <option value="1">否</option>
+                                <option value="0">是</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>是否可用</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_valid" value="{{valid}}"/>
+                            <select id="edit_valid" name="valid" class="form-control">
+                                <option value="1">可用</option>
+                                <option value="0">不可用</option>
+                            </select>
+                        </td>
+                        <th>功能类型</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_resType" value="{{resType}}"/>
+                            <select id="edit_resType" name="resType" class="form-control">
+                                <option value="URL">URL</option>
+                                <option value="FUNCTION">方法</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>备注</th>
+                        <td><input type="text" class="form-control" name="memo" value="{{memo}}"/></td>
+                        <th>功能编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" id="edit_menuDescribe" name="menuDescribe" value="{{menuDescribe}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>序号<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" id="edit_innerOrder" name="innerOrder" value="{{innerOrder}}"/></td>
+                        <th>菜单级别</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_level" value="{{level}}"/>
+                            <select id="edit_level" name="level" class="form-control">
+                                <option value="1">普通企业</option>
+                                <option value="100">平台企业</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>菜单样式</th>
+                        <td><input type="text" class="form-control" id="edit_menuClass" name="menuClass" value="{{menuClass}}"/></td>
+                        <th>iframe加载</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_iframe" value="{{iframe}}"/>
+                            <select id="edit_iframe" name="iframe" class="form-control">
+                                <option value="false">否</option>
+                                <option value="true">是</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+
+    </div>
+</script>
+<!--编辑弹窗结束-->
+
+
+
+
+<script>
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "menuId",
+                pIdKey: "parentMenuId"
+            },
+            key:{
+                name:"menuName"
+            }
+        },
+        callback:{
+            onNodeCreated:NodeCreatedEvent
+        }
+    };
+
+    function NodeCreatedEvent(event, treeId, treeNode) {
+        var parentId=treeNode.menuId;
+        var parentNodeHtml= "【<a href='#' class='handle-tree' data-type='add' data-parentId = '"+ parentId +"'  >增</a>︱" +
+            "<a href='#' class='handle-tree' data-type='edit' data-parentId = '"+ parentId +"'  >改</a>︱" +
+            "<a href='#' class='handle-tree' data-type='del' data-parentId = '"+ parentId +"' >删</a>】";
+
+
+        var subNodeHtml= "【<a href='#'  class='handle-tree' data-type='edit' data-parentId = '"+ parentId +"' >改</a>︱" +
+            "<a href='#' class='handle-tree' data-type='del' data-parentId = '"+ parentId +"'>删</a>】";
+
+        console.log(treeNode);
+        if(treeNode.isMenu==1){
+            $("#"+treeNode.tId).append(parentNodeHtml);
+        }else{
+            $("#"+treeNode.tId).append(subNodeHtml);
+        }
+
+    }
+
+
+    //页面初始化
+    $(document).ready(
+        init()
+    );
+
+    function init() {
+        onLoadZTree();
+
+        $("#menuTree").on("click",".handle-tree",function (e) {
+            var parentId = $(this).data("parentid");
+            var type = $(this).data("type");
+
+            if(type == "add"){
+                initSave(parentId);
+            }else if(type == "edit"){
+                initModify(parentId);
+            }else if(type == "del"){
+                doRemove(parentId)
+            }
+
+        });
+
+
+    }
+
+    function onLoadZTree() {
+        var treeNodes;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            data: "",
+            url: "/menu/getMenuList",
+            success: function (result) {
+                if(result.returnCode==1){
+                    treeNodes=result.data[0];
+                    $.fn.zTree.init($("#menuTree"), setting, treeNodes);
+                }else{
+                    layer.msg(result.msg);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+        
+    }
+
+    //展开
+    function openAll(){
+        var treeObj = $.fn.zTree.getZTreeObj("menuTree");
+        treeObj.expandAll(true);
+    }
+    //缩回
+    function closeAll(){
+        var treeObj = $.fn.zTree.getZTreeObj("menuTree");
+        treeObj.expandAll(false);
+    }
+
+
+    //新增
+    function initSave(parentMenuId){
+        $.ajax({
+            type: "GET",
+            url: "/menu/addMenu",
+            data:{parentMenuId:parseInt(parentMenuId)},
+            dataType: "json",
+            error: function (result) {
+                layer.msg("请求错误");
+            },
+            success: function (result) {
+                if(result.returnCode==1){
+                    var returnDate=result.data[0];
+                    var addMenuTempl = template("addMenuTempl",{});
+                    var parentMenuName="";
+
+                    if(returnDate!=null){
+                        parentMenuName=returnDate.menuName;
+                    }
+
+                    var index_1 = layer.open({
+                        type: 1,
+                        title: "菜单新增",
+                        area: ['800px', '400px'], //宽高
+                        content: addMenuTempl,
+                        success: function () {
+                            $("#parentMenuNameLable").html("父功能名称 "+parentMenuName);
+                        },
+                        btn: ["确定","取消"],
+                        yes: function (index_1,layero) {
+                            saveAdd(index_1,returnDate);
+                        },
+                        btn2:function (index_1,layero) {
+                            layer.close(index_1);
+
+                        }
+                    });
+                }else{
+                    layer.msg(result.msg);
+                }
+
+
+
+            }
+        })
+    }
+
+    //修改
+    function initModify(menuId){
+        $.ajax({
+            type: "GET",
+            url: "/menu/editMenu",
+            data:{menuId:parseInt(menuId)},
+            dataType: "json",
+            error: function (result) {
+                layer.msg("请求错误");
+            },
+            success: function (result) {
+                if(result.returnCode==1){
+                    var returnDate=result.data[0];
+                    var editMenuTempl = template("editMenuTempl",returnDate);
+                    debugger;
+                    var parentMenuName="";
+
+                    if(returnDate!=null){
+                        parentMenuName=returnDate.menuName;
+                    }
+
+                    var index_2 = layer.open({
+                        type: 1,
+                        title: "菜单编辑",
+                        area: ['800px', '400px'], //宽高
+                        content: editMenuTempl,
+                        success: function () {
+                            $("#parentMenuNameLable").html("父功能名称 "+parentMenuName);
+                            $("#edit_isMenu").val($("#hidden_edit_isMenu").val());
+                            $("#edit_valid").val($("#hidden_edit_valid").val());
+                            $("#edit_resType").val($("#hidden_edit_resType").val());
+                            $("#edit_level").val($("#hidden_edit_level").val());
+                            $("#edit_iframe").val($("#hidden_edit_iframe").val());
+                        },
+                        btn: ["确定","取消"],
+                        yes: function (index_2,layero) {
+                            saveEdit(index_2);
+                        },
+                        btn2:function (index_2,layero) {
+                            layer.close(index_2);
+                        }
+                    });
+                }else{
+                    layer.msg(result.msg);
+                }
+            }
+
+        })
+    }
+
+
+    //删除
+    function doRemove(menuId){
+        if(!confirm('您确认删除吗？')){
+            return;
+        }
+        $.ajax({
+            type : "DELETE",
+            dataType : "json",
+            data : {menuId:parseInt(menuId)},
+            url : "/menu/deleteMenu",
+            error : function(result) {
+                layer.msg("请求错误");
+
+            },
+            success : function(result) {
+                if(result.returnCode==1){
+                    layer.msg("处理成功");
+                    onLoadZTree();
+                }else{
+                    layer.msg(result.msg);
+                }
+            }
+        });
+
+    }
+
+
+
+    //新增保存
+    function saveAdd(index_1,returnDate){
+        //校验
+        var menuName=$("#add_menuName").val();
+        if(menuName==""){
+            layer.msg("请输入功能名称");
+            return false;
+        }
+
+        var innerOrder=$("#add_innerOrder").val();
+        if(innerOrder==""){
+            layer.msg("请输入序号");
+            return false;
+        }
+
+        var menuDescribe=$("#add_menuDescribe").val();
+        if(menuDescribe==""){
+            layer.msg("请输入功能编码");
+            return false;
+        }
+
+        var innerOrder=$("#add_innerOrder").val();
+        var str=/^([1-9]\d*)|([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$/;
+        if(!str.test(innerOrder)){
+            layer.msg("序号格式不正确！");
+            return false;
+        }
+
+
+        var d={};
+        var t = $('#addForm').serializeArray();
+        $.each(t, function () {
+            d[this.name] = this.value;
+        });
+
+        if(returnDate==null)
+            d["parentMenuId"]=0;
+        else
+            d["parentMenuId"]=returnDate.menuId;
+
+//        if(d["parentMenuId"]==0){
+//            //加一级菜单
+//            if(d["isMenu"]!=1){
+//                layer.msg("请选择末级菜单为否");
+//                return false;
+//            }
+//        }
+
+
+
+        $.ajax({
+            type : "POST",
+            dataType : "json",
+            contentType:"application/json; charset=utf-8",
+            data : JSON.stringify(d),
+            url : "/menu/saveMenu",
+            error : function(result) {
+                layer.msg("请求错误");
+
+            },
+            success : function(result) {
+                if(result.returnCode==1){
+                    layer.msg("处理成功");
+                    layer.close(index_1);
+                    onLoadZTree();
+                }else{
+                    layer.msg(result.msg);
+                }
+
+            }
+        });
+    }
+
+
+    //修改保存
+    function saveEdit(index_2){
+        var menuName=$("#edit_menuName").val();
+        if(menuName==""){
+            layer.msg("请输入功能名称");
+            return false;
+        }
+
+        var innerOrder=$("#edit_innerOrder").val();
+        if(innerOrder==""){
+            layer.msg("请输入序号");
+            return false;
+        }
+
+        var menuDescribe=$("#edit_menuDescribe").val();
+        if(menuDescribe==""){
+            layer.msg("请输入功能编码");
+            return false;
+        }
+        var innerOrder=$("#edit_innerOrder").val();
+        var str=/^([1-9]\d*)|([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$/;
+        if(!str.test(innerOrder)){
+            layer.msg("序号格式不正确！");
+            return false;
+        }
+
+        var d={};
+        var t = $('#editForm').serializeArray();
+        $.each(t, function () {
+            d[this.name] = this.value;
+        });
+
+//        if(d["parentMenuId"]==0){
+//            //加一级菜单
+//            if(d["isMenu"]!=1){
+//                layer.msg("请选择顶级菜单为是");
+//                return false;
+//            }
+//        }else{
+//            if(d["isMenu"]!=0){
+//                layer.msg("请选择顶级菜单为否");
+//                return false;
+//            }
+//
+//        }
+
+        $.ajax({
+            type : "POST",
+            dataType : "json",
+            contentType:"application/json; charset=utf-8",
+            data : JSON.stringify(d),
+            url : "/menu/saveMenu",
+            error : function(result) {
+                layer.msg("请求错误");
+
+            },
+            success : function(result) {
+                if(result.returnCode==1){
+                    layer.msg("修改成功");
+                    onLoadZTree();
+                }else{
+                    layer.msg(result.msg);
+                }
+                layer.close(index_2);
+            }
+        });
+    }
+
+
+
+
+
+</script>

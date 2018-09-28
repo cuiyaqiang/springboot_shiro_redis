@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guye.dao.master.TestDao">
+    <resultMap id="BaseResultMap" type="com.guye.model.City">
+        <result column="id" property="id" />
+        <result column="province_id" property="provinceId" />
+        <result column="city_name" property="cityName" />
+        <result column="description" property="description" />
+        <result column="enterpriseid" property="enterpriseid" />
+    </resultMap>
+
+    <!--<parameterMap id="City" type="org.spring.springboot.domain.City"/>-->
+
+    <sql id="Base_Column_List">
+        id, province_id, city_name, description,enterpriseid
+    </sql>
+
+    <select id="getCityList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM city
+    </select>
+
+    <select id="isExitUserName" resultType="int" parameterType="java.lang.String">
+        SELECT count(*) FROM userInfo WHERE username = #{username}
+    </select>
+
+    <select id="isExitUser" resultType="int">
+        SELECT count(*) FROM userInfo WHERE username = #{username} AND password = #{password}
+    </select>
+
+    <insert id="insertCity" parameterType="com.guye.model.City" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO city(id,province_id,city_name,description,enterpriseid)
+        VALUES (#{id},#{provinceId},#{cityName},#{description},#{enterpriseid})
+    </insert>
+
+    <select id="findUserInfoByUserName" resultType="com.guye.model.UserInfo">
+        SELECT user_id,username,password,name,salt,state
+        FROM userinfo
+        WHERE username = #{username}
+        <if test="password != null">
+          AND password = #{password}
+        </if>
+    </select>
+
+    <select id="findSysRoleByUserId" resultType="com.guye.model.Sysrole">
+        SELECT s."id",s."role",s.description,s.available
+        FROM "sys_userInfo_role" sur
+        LEFT JOIN "sysRole" s
+        ON sur.role_id = s.id
+        LEFT JOIN userInfo u
+        ON sur."userInfo_id" = u.user_id
+        WHERE u.username = #{username}
+        <if test="password != null">
+            AND u.password = #{password}
+        </if>
+    </select>
+
+    <select id="findSysPermissionByRoleId" resultType="com.guye.model.Syspermission" parameterType="com.guye.model.Sysrole">
+        SELECT s."id",s."name",s."parentId",s."parentIds",s.available,s.permission,s."resourceType",s.url
+        FROM "sys_role_permission" srp
+        LEFT JOIN "sysPermission" s
+        ON srp.permission_id = s.id
+        WHERE srp.role_id = #{id}
+    </select>
+
+    <select id="getCityById" resultType="com.guye.model.City" parameterType="int">
+        SELECT <include refid="Base_Column_List"/> FROM city
+        WHERE id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,116 @@
+<div class="newpage-con">
+    <div class="block row clearfix">
+        <div class="col-md-2"></div>
+        <form id="signupForm" class="form-horizontal col-md-8" role="form">
+            <div class="form-group">
+                <label for="account" class="col-md-3 control-label">账号：</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" name="account" id="account"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-md-3 control-label">密码：</label>
+                <div class="col-md-7">
+                    <input type="password" class="form-control" name="password" id="password"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password" class="col-md-3 control-label">确认密码：</label>
+                <div class="col-md-7">
+                    <input type="password" class="form-control" name="confirm_password" id="confirm_password"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="col-md-3 control-label">邮箱：</label>
+                <div class="col-md-7">
+                    <input type="email" class="form-control" name="email" id="email"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="firstname" class="col-md-3 control-label">姓：</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" name="firstname" id="firstname"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastname" class="col-md-3 control-label">名：</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" name="lastname" id="lastname"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-7 col-md-offset-3">
+                    <div class="checkbox">
+                        <label><input id="agree" type="checkbox" name="agree"/>同意xxxx协议</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-actions">
+                <div class="col-md-7 col-md-offset-3">
+                    <button type="submit" class="btn btn-primary">注册</button>
+                </div>
+            </div>
+        </form>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+
+
+        // validate signup form on keyup and submit
+        $("#signupForm").validate({
+
+            rules: {
+                firstname: "required",
+                lastname: "required",
+                account: {
+                    required: true,
+                    minlength: 6
+                },
+                password: {
+                    required: true,
+                    minlength: 5
+                },
+                confirm_password: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#password"
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                agree: "required"
+            },
+            messages: {
+                firstname: "请输入您的姓",
+                lastname: "请输入您的名",
+                account: {
+                    required: "请输入用户名",
+                    minlength: "用户名长度至少为6"
+                },
+                password: {
+                    required: "请输入密码",
+                    minlength: "密码长度至少为6"
+                },
+                confirm_password: {
+                    required: "请确认密码",
+                    minlength: "密码长度至少为6",
+                    equalTo: "密码不一致"
+                },
+                email: "请输入邮箱账号",
+                agree: "请同意我们的协议"
+            }
+        });
+
+    });
+
+</script>

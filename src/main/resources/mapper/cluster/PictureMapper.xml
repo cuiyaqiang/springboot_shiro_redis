@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guye.dao.cluster.PictureDao">
+    <select id="findOnePic" resultType="com.guye.model.Pic" parameterType="int">
+        select * from picture where id = #{id}
+    </select>
+</mapper>

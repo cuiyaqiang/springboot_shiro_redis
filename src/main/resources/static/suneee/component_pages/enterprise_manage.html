@@ -1,0 +1,428 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div id="enterprise-manage-table">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--新增弹窗开始-->
+<script id="addEnterpriseTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="addEnterpriseDlg" class="from_table_con">
+            <form role="form">
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>企业编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="enterprisecode" /></td>
+                        <th>企业名称<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="enterprisename" /></td>
+                    </tr>
+                    <tr>
+                        <th>上级企业编码</th>
+                        <td><input type="text" class="form-control" name="parententerprisecode" /></td>
+                        <th>所属集团公司</th>
+                        <td><input type="text" class="form-control" name="groupenterprisecode" /></td>
+                    </tr>
+                    <tr>
+                        <th>注册地址</th>
+                        <td><input type="text" class="form-control" name="enterpriseaddr" /></td>
+                        <th>状态</th>
+                        <td>
+                            <select name="status" class="form-control">
+                                <option value="1">可用</option>
+                                <option value="0">不可用</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>税号</th>
+                        <td><input type="text" class="form-control" name="enterpriseird" /></td>
+                        <th>公私有标识</th>
+                        <td>
+                            <select name="flag" class="form-control">
+                                <option value="1">公有</option>
+                                <option value="0">私有</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>法人</th>
+                        <td><input type="text" class="form-control" name="enterpriselperson" /></td>
+                        <th>联系人</th>
+                        <td><input type="text" class="form-control" name="enterprisecperson" /></td>
+                    </tr>
+                    <tr>
+                        <th>库标识</th>
+                        <td><input type="text" class="form-control" name="dbidentify" /></td>
+                        <th>企业等级</th>
+                        <td>
+                            <select name="level" class="form-control">
+                                <option value="1">普通企业</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div id="add_enterprise_notice">
+                    <p class="songti-p">1:新建一般租户企业，请选择普通企业</p>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</script>
+<!--新增弹窗结束-->
+
+
+
+<!--编辑弹窗开始-->
+<script id="editEnterpriseTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="editEnterpriseDlg" class="from_table_con">
+            <form role="form">
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <input type="hidden" id="enterpriseid" name="enterpriseid" value="{{enterpriseid}}">
+                    <tr>
+                        <th>企业编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="enterprisecode" value="{{enterprisecode}}"/></td>
+                        <th>企业名称<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="enterprisename" value="{{enterprisename}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>上级企业编码</th>
+                        <td><input type="text" class="form-control" name="parententerprisecode" value="{{parententerprisecode}}"/></td>
+                        <th>所属集团公司</th>
+                        <td><input type="text" class="form-control" name="groupenterprisecode" value="{{groupenterprisecode}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>注册地址</th>
+                        <td><input type="text" class="form-control" name="enterpriseaddr" value="{{enterpriseaddr}}"/></td>
+                        <th>状态</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_status" value="{{status}}"/>
+                            <select id="edit_status" name="status" class="form-control">
+                                <option value="1">可用</option>
+                                <option value="0">不可用</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>税号</th>
+                        <td><input type="text" class="form-control" name="enterpriseird" value="{{enterpriseird}}"/></td>
+                        <th>公私有标识</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_flag" value="{{flag}}"/>
+                            <select id="edit_flag" name="flag" class="form-control">
+                                <option value="1">公有</option>
+                                <option value="0">私有</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>法人</th>
+                        <td><input type="text" class="form-control" name="enterpriselperson" value="{{enterpriselperson}}"/></td>
+                        <th>联系人</th>
+                        <td><input type="text" class="form-control" name="enterprisecperson" value="{{enterprisecperson}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>库标识</th>
+                        <td><input type="text" class="form-control" name="dbidentify" value="{{dbidentify}}"/></td>
+                        <th>企业等级</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_level" value="{{level}}"/>
+                            <select id="edit_level" name="level" class="form-control">
+                                <option value="1">普通企业</option>
+                                <option value="100">平台管理企业</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div id="edit_enterprise_notice">
+                    <p class="songti-p">1:新建一般租户企业，请选择普通企业</p>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</script>
+<!--编辑弹窗结束-->
+
+
+<!-- 详情弹窗开始-->
+<script id="enterpriseInfoDetail" type="text/html">
+    <table cellpadding="0" cellspacing="0" class="from_table">
+        <tr>
+            <th>企业编码<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterprisecode" value="{{enterprisecode}}"/></td>
+            <th>企业名称<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterprisename" value="{{enterprisename}}"/></td>
+        </tr>
+        <tr>
+            <th>上级企业编码</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="parententerprisecode" value="{{parententerprisecode}}"/></td>
+            <th>所属集团公司</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="groupenterprisecode" value="{{groupenterprisecode}}"/></td>
+        </tr>
+        <tr>
+            <th>注册地址</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterpriseaddr" value="{{enterpriseaddr}}"/></td>
+            <th>状态</th>
+            <td>
+                <input type="hidden" id="hidden_detail_status" value="{{status}}"/>
+                <select id="detail_status" name="status" class="form-control" disabled="true">
+                    <option value="1">可用</option>
+                    <option value="0">不可用</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>税号</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterpriseird" value="{{enterpriseird}}"/></td>
+            <th>公私有标识</th>
+            <td>
+                <input type="hidden" id="hidden_detail_flag" value="{{flag}}"/>
+                <select id="detail_flag" name="flag" class="form-control" disabled="true">
+                    <option value="1">公有</option>
+                    <option value="0">私有</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>法人</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterpriselperson" value="{{enterpriselperson}}"/></td>
+            <th>联系人</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterprisecperson" value="{{enterprisecperson}}"/></td>
+        </tr>
+        <tr>
+            <th>库标识</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="dbidentify" value="{{dbidentify}}"/></td>
+            <th>企业等级</th>
+            <td>
+                <input type="hidden" id="hidden_detail_level" value="{{level}}"/>
+                <select id="detail_level" name="level" class="form-control" disabled="true">
+                    <option value="1">普通企业</option>
+                    <option value="100">平台管理企业</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</script>
+<!-- 详情弹窗结束-->
+
+
+<script type="text/javascript">
+    $(function () {
+        //表格的属性对象，用于初始化表格的设置
+        var option = {
+            // "新增窗口"的配置
+            add: {
+                title:"企业信息",//窗口标题
+                id:"addEnterpriseDlg",//窗口的ID,这里不能自己写，要跟窗口div的id相同
+                height:"400px",
+                width:"800px",
+                templId:"addEnterpriseTempl",//窗口内容的ID
+                url: "/enterprise/enterpriseAdd",//点保存跳转的地址，框架默认是POST请求，无需自己配置
+                openCallback:function () {//点击事件，比如提交，关闭窗口等
+
+                },
+                validated: {//校验
+                    rules: {//校验规则
+                        enterprisecode: "required",
+                        enterprisename: "required"
+                    },
+                    messages: {//校验提示信息
+                        enterprisecode: "企业编码不能为空",
+                        enterprisename: "企业名称不能为空"
+                    }
+
+                }
+            },
+            detail: { // 详情的配置
+                onclick:function (index,row) {
+                    showDetail(row);
+                }
+            },
+            seniorSearch: false,
+            edit: {
+                onclick:function (index,row) {
+                    var html = template("editEnterpriseTempl",row);
+
+                    var editopen = layer.open({
+                        type: 1,
+                        title: "企业信息编辑",
+                        area: ['800px', '400px'], //宽高
+                        content: html,
+                        success: function () {
+                            $("#edit_flag").val($("#hidden_edit_flag").val());
+                            $("#edit_level").val($("#hidden_edit_level").val());
+                            $("#edit_status").val($("#hidden_edit_status").val());
+                        },
+                        btn: ["确定","取消"],
+                        yes: function () {
+                            toSaveFun(editopen,table);
+                        },
+                        no:function () {
+                            layer.close(editopen);
+                        }
+                    });
+                }
+            },
+            del: {
+                onclick:function (index,row) {
+                    deleteOneFun(row,table);
+                }
+            },
+            search: true,
+            tools: true,
+            // 表格的头部，有多少列，就写多少
+            columns: [{
+                filed: "企业编码",
+                name: "enterprisecode"
+            }, {
+                filed: "名称",
+                name: "enterprisename"
+            },{
+                filed: "上级企业",
+                name: "parententerprisecode"
+            },{
+                filed: "所属集团",
+                name: "groupenterprisecode"
+            }, {
+                filed: "注册地址",
+                name: "enterpriseaddr"
+            }, {
+                filed: "状态",
+                name: "status"
+            }],
+            columnDefs: [
+                {
+                    render: function (data, type, row) {
+                        if (data == undefined || data == "") {
+                            return "";
+                        } else if (data == 1) {
+                            return "可用";
+                        } else {
+                            return "不可用";
+                        }
+                    },
+                    targets: [7] // 第几列 6 9 10 11 12
+                }
+
+            ],
+            // 表格获取信息的后台服务器地址
+            url: "/enterprise/enterpriseList",
+            ajax: function (data, callback, settings) {
+                //ajax配置为function,手动调用异步查询
+                $.ajax({
+                    type: "GET",
+                    url: "/enterprise/enterpriseList",
+                    data: {},
+                    dataType: "json",
+                    success: function (result) {
+                        layer.msg("接口调用成功");
+                        var finalData = result.data[0];
+                        //封装返回数据
+                        var returnData = {};
+                        returnData.draw = data.draw;//自行返回draw参数,最好由后台返回
+                        returnData.recordsTotal = finalData.totalCount;
+                        returnData.recordsFiltered = finalData.pageSize;
+                        returnData.data = finalData.results;
+                        //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                        callback(returnData);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        layer.msg("查询失败");
+                    }
+                });
+            }
+        };
+        var table = suneeeUI.seTable("enterprise-manage-table", option);
+
+//详情弹窗
+        function showDetail(row){
+            var enterpriseInfoDetail = template("enterpriseInfoDetail", row);
+            var index = layer.open({
+                type: 1,
+                title: "企业详细信息",
+                area: ['800px', '400px'], //宽高
+                content: enterpriseInfoDetail,
+                success: function () {
+                    $("#detail_flag").val($("#hidden_detail_flag").val());
+                    $("#detail_level").val($("#hidden_detail_level").val());
+                    $("#detail_status").val($("#hidden_detail_status").val());
+                },
+                btn: ["确定"],
+                yes: function () {
+                    layer.close(index);
+                }
+            });
+        }
+
+
+
+        //编辑保存
+        function toSaveFun(layerIndex,table) {
+            var d = {};
+            var t = $('#editEnterpriseDlg').find("form").serializeArray();
+            $.each(t, function () {
+                d[this.name] = this.value;
+            });
+            $.ajax({
+                type: "POST",
+                contentType:"application/json; charset=utf-8",
+                url: "/enterprise/enterpriseModify",
+                data:JSON.stringify(d),
+                dataType: "json",
+                error: function (result) {
+                    layer.msg("处理失败！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("保存成功！");
+                        layer.close(layerIndex);
+                        table.reload();
+                    }else{
+                        layer.msg(result.msg);
+                        layer.close(layerIndex);
+                    }
+                }
+            });
+        }
+
+
+        //删除一行
+        function deleteOneFun(row,table) {
+            layer.confirm("确定删除该条记录吗?", {
+                btn: ['确定', '取消']//按钮
+            }, function () { // 点击确定的时候
+                $.ajax({
+                    type: "DELETE",
+                    dataType: "json",
+                    data: {"ids":row.enterpriseid},
+                    url: "/enterprise/enterpriseBatchDelete",
+                    success: function (result) {
+                        if(result.returnCode==1){
+                            layer.msg("处理成功！");
+                            table.reload(); //表格刷新
+                        }else{
+                            layer.msg(result.msg);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
+            });
+        }
+
+
+    });
+
+</script>

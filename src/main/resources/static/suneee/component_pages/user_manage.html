@@ -1,0 +1,1082 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div id="system-user-manage-table">
+
+        </div>
+    </div>
+</div>
+
+
+<!--新增弹窗开始-->
+<script id="system-addUserTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="system-addUserDlg" class="from_table_con">
+            <form role="form">
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>账户<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="account" /></td>
+                        <th>密码<label class="required">*</label></th>
+                        <td><input type="password" class="form-control" name="password" /></td>
+                    </tr>
+                    <tr>
+                        <th>姓名<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="name" /></td>
+                        <th>状态</th>
+                        <td>
+                            <select name="valid" class="form-control" >
+                                <option value="1">有效</option>
+                                <option value="0">无效</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>地址</th>
+                        <td><input type="text" class="form-control" name="address" /></td>
+                        <th>邮箱<!--<label class="required">*</label>--></th>
+                        <td><input type="text" class="form-control" name="eMail" /></td>
+                    </tr>
+                    <tr>
+                        <th>手机号码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="telphone" /></td>
+                        <th>备注</th>
+                        <td><input type="text" class="form-control" name="memo" /></td>
+                    </tr>
+                    <tr id="add_enterprise_tr">
+                        <th>企业编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control enterprisecode_entry" id="enterprisecode" name="enterprisecode" /></td>
+                        <th>企业id</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="enterpriseid" name="enterpriseid" /></td>
+                    </tr>
+                    <tr id="add_employee_tr">
+                        <th>关联员工<label class="required">*</label></th>
+                        <td><input type="text" class="form-control employee_entry" id="employeeid" name="employeeid"/></td>
+                        <th>关联员工姓名</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="employeename" name="employeename"/></td>
+                    </tr>
+                    <tr id="add_org_tr">
+                        <th>组织机构ID</th>
+                        <td><input type="text" class="form-control orgid_entry" id="orgid" name="orgid"/></td>
+                        <th>组织机构名称</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="orgname" name="orgname"/></td>
+                    </tr>
+                </table>
+                <div id="add_user_notice">
+                    <p class="songti-p">1：新增管理员账号时，关联员工为虚拟员工，请输入EPADMIN,组织机构为虚拟组织机构，请输入EPADMIN</p>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</script>
+<!--新增弹窗结束-->
+
+
+<!--同步弹窗开始-->
+<script id="system-syncUserTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="system-syncUserDlg" class="from_table_con">
+            <form role="form">
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <th>手机号</th>
+                        <td><input type="text" class="form-control" name="telphone" /></td>
+                        <th>邮箱</th>
+                        <td><input type="text" class="form-control" name="eMail" /></td>
+                    </tr>
+                    <tr>
+                        <th>企业编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="enterprisecode" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+    </div>
+</script>
+<!--同步弹窗结束-->
+
+
+<!--编辑弹窗开始-->
+<script id="system-editUserTempl" type="text/html">
+    <div style="width: 100%;">
+        <div id="system-editUserDlg" class="from_table_con">
+            <form role="form">
+                <table cellpadding="0" cellspacing="0" class="from_table">
+                    <tr>
+                        <input type="hidden" name="userId" value="{{userId}}"/>
+                        <th>账户<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" readonly="readonly" name="account" value="{{account}}"/></td>
+                        <th>密码<label class="required">*</label></th>
+                        <td><input type="password" class="form-control" name="password" value="{{password}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>姓名<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="name" value="{{name}}"/></td>
+                        <th>状态</th>
+                        <td>
+                            <input type="hidden" id="hidden_edit_valid" value="{{valid}}">
+                            <select id="edit_valid" name="valid" class="form-control">
+                                <option value="1">有效</option>
+                                <option value="0">无效</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>地址</th>
+                        <td><input type="text" class="form-control" name="address" value="{{address}}"/></td>
+                        <th>邮箱<!--<label class="required">*</label>--></th>
+                        <td><input type="text" class="form-control" name="eMail" value="{{eMail}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>手机号码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control" name="telphone" value="{{telphone}}"/></td>
+                        <th>备注</th>
+                        <td><input type="text" class="form-control" name="memo" value="{{memo}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>企业编码<label class="required">*</label></th>
+                        <td><input type="text" class="form-control enterprisecode_entry" id="edit_enterprisecode" name="enterprisecode" value="{{enterprisecode}}"/></td>
+                        <th>企业id</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="edit_enterpriseid" name="enterpriseid" value="{{enterpriseid}}"/></td>
+                    </tr>
+                    <tr>
+                        <th>关联员工<label class="required">*</label></th>
+                        <td><input type="text" class="form-control employee_entry" id="edit_employeeid" name="employeeid" value="{{employeeid}}"/></td>
+                        <th>关联员工姓名</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="edit_employeename" name="employeename" value="{{employeename}}"/></td>
+                    </tr>
+                    <tr id="edit_org_tr">
+                        <th>组织机构ID</th>
+                        <td><input type="text" class="form-control orgid_entry" id="edit_orgid" name="orgid" value="{{orgid}}"/></td>
+                        <th>组织机构名称</th>
+                        <td><input type="text" class="form-control" readonly="readonly" id="edit_orgname" name="orgname" value="{{orgname}}"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+    </div>
+</script>
+<!--编辑弹窗结束-->
+
+
+
+<!-- 详情弹窗开始-->
+<script id="userInfoDetail" type="text/html">
+    <table cellpadding="0" cellspacing="0" class="from_table">
+        <tr>
+            <th>账户<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly" name="account" value="{{account}}"/></td>
+            <th>密码<label class="required">*</label></th>
+            <td><input type="password" class="form-control" readonly="readonly" name="password" value="{{password}}"/></td>
+        </tr>
+        <tr>
+            <th>姓名<label class="required">*</label></th>
+            <td><input type="text" class="form-control" name="name" readonly="readonly" value="{{name}}"/></td>
+            <th>状态</th>
+            <td>
+                <input type="hidden" id="hidden_detail_valid" value="{{valid}}">
+                <select id="detail_valid" name="valid"  class="form-control" readonly="readonly">
+                    <option value="1">有效</option>
+                    <option value="0">无效</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>地址</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="address" value="{{address}}"/></td>
+            <th>邮箱<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly" name="eMail" value="{{eMail}}"/></td>
+        </tr>
+        <tr>
+            <th>手机号码<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly" name="telphone" value="{{telphone}}"/></td>
+            <th>备注</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="memo" value="{{memo}}"/></td>
+        </tr>
+        <tr>
+            <th>企业编码<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterprisecode" value="{{enterprisecode}}"/></td>
+            <th>企业id</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="enterpriseid" value="{{enterpriseid}}"/></td>
+        </tr>
+        <tr>
+            <th>关联员工<label class="required">*</label></th>
+            <td><input type="text" class="form-control" readonly="readonly" name="employeeid" value="{{employeeid}}"/></td>
+            <th>关联员工姓名</th>
+            <td><input type="text" class="form-control" readonly="readonly" name="employeename" value="{{employeename}}"/></td>
+        </tr>
+        <tr id="detail_org_tr">
+            <th>组织机构ID</th>
+            <td><input type="text" class="form-control orgid_entry" readonly="readonly" id="detail_orgid" name="orgid" value="{{orgid}}"/></td>
+            <th>组织机构名称</th>
+            <td><input type="text" class="form-control" readonly="readonly" id="detail_orgname" name="orgname" value="{{orgname}}"/></td>
+        </tr>
+    </table>
+</script>
+<!-- 详情弹窗结束-->
+
+
+<script id="usermanage_searchpanelTpl" type="text/html">
+      <table cellpadding="0" cellspacing="0" class="from_table">
+        <tr>
+            <th>账户</th>
+            <td><input type="text" class="form-control" name="account"/>
+            </td>
+        </tr>
+          <tr>
+              <th>用户ID</th>
+              <td><input type="test" class="form-control" id="search_userId" name="userId"
+                         onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
+              </td>
+          </tr>
+        <tr>
+            <th>名称</th>
+            <td><input type="text" class="form-control" name="name"/>
+            </td>
+        </tr>
+        </table>
+</script>
+
+
+
+
+<!-- 详情弹窗开始-->
+<script id="UserRoleList" type="text/html">
+    <div class="col-xs-12">
+        <div id="user-roleList-table">
+
+        </div>
+    </div>
+</script>
+<!-- 详情弹窗结束-->
+
+
+<!--批量导入-->
+<script id="batchImport" type="text/html">
+    <form id="batchImportForm" enctype="multipart/form-data">
+        <table cellpadding="0" cellspacing="0" class="from_table">
+            <tr>
+                <th>选择文件：</th>
+                <td><input type="file" name="file" id="file" value=""/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+        //表格的属性对象，用于初始化表格的设置
+        var option = {
+            plusBtn:[
+//            {
+//                id : "level_edit", // 按钮的id
+//                text : "编辑", // 显示的文字
+//                clazz : "btn btn-primary btn-sm",// 按钮的class
+//            }, {
+//                id : "level_delete", // 按钮的id
+//                text : "删除", // 显示的文字
+//                clazz : "btn btn-primary btn-sm",// 按钮的class
+//            },
+            { // 自定义toolbar 上的按钮
+                id:"importBtn",
+                text:"导入",
+                clazz:"btn btn-primary btn-sm"
+            },
+            { // 自定义toolbar 上的按钮
+                    id:"downloadBtn",
+                    text:"导入模板下载",
+                    clazz:"btn btn-primary btn-sm"
+            },{ // 自定义toolbar 上的按钮
+                    id:"userSync",
+                    text:"用户同步",
+                    clazz:"btn btn-primary btn-sm"
+            }
+//            ,{ // 自定义toolbar 上的按钮
+//                    id:"search",
+//                    text:"查询",
+//                    clazz:"btn btn-primary btn-sm"
+//            }
+            ],
+            // "新增窗口"的配置
+            add: {
+                title:"用户信息",//窗口标题
+                id:"system-addUserDlg",//窗口的ID,这里不能自己写，要跟窗口div的id相同
+                height:"400px",
+                width:"800px",
+                templId:"system-addUserTempl",//窗口内容的ID
+                url: "/user/userAdd",//点保存跳转的地址，框架默认是POST请求，无需自己配置
+                openCallback:function () {//点击事件，比如提交，关闭窗口等
+                    var test4 = $(".enterprisecode_entry").bigAutocomplete({
+                        width : 'auto',
+                        id : [ 'enterprisecode', 'enterprisename', 'enterpriseid' ],
+                        highlight : true,
+                        ajax : {
+                            url : '/enterprise/getEnterpriseList',
+                            type : "GET",
+                            success : function(data) {
+                                var result = eval(data);
+                                var Str = result.data[0];
+                                var datas = [];
+                                for (var i = 0; i < Str.length; i++) {
+                                    datas[i] = [];
+                                    datas[i].push(Str[i].enterprisecode);
+                                    datas[i].push(Str[i].enterprisename);
+                                    datas[i].push(Str[i].enterpriseid);
+                                }
+                                test4.setData(datas, true); // 设置显示的内容，并更新
+                                test4.setTitle([ '企业编码', '企业名称', '企业id' ]); // 设置标题
+                            }
+                        },
+                        callback:function(rowData) {
+                            $("#enterprisecode").val(rowData[0]);
+                            $("#enterpriseid").val(rowData[2]);
+
+                            var test5 = $(".employee_entry").bigAutocomplete({
+                                width : 'auto',
+                                id : [ 'employeeid', 'opcode', 'employeename' ],
+                                highlight : true,
+                                ajax : {
+                                    url : '/user/getEmployeeList?enterprisecode='+$("#enterprisecode").val(),
+                                    type : "GET",
+                                    success : function(data) {
+                                        var result = "";
+                                        var Str = "";
+                                        if (data != undefined && data != "") {
+                                            result = eval(data);
+                                            Str = result.data[0];
+                                        }
+                                        var datas = [];
+                                        for (var i = 0; i < Str.length; i++) {
+                                            datas[i] = [];
+                                            datas[i].push(Str[i].employeeid);
+                                            datas[i].push(Str[i].opcode);
+                                            datas[i].push(Str[i].employeename);
+                                        }
+                                        test5.setData(datas, true); // 设置显示的内容，并更新
+                                        test5.setTitle([ '员工编号', '员工操作码', '员工姓名' ]); // 设置标题
+                                    }
+                                },
+                                callback:function(rowData){
+                                    $("#employeeid").val(rowData[0]);
+                                    $("#employeename").val(rowData[2]);
+                                }
+                            });
+
+
+                            var test6 = $(".orgid_entry").bigAutocomplete({
+                                width : 'auto',
+                                id : [ 'orgid', 'orgname'],
+                                highlight : true,
+                                ajax : {
+                                    url : '/user/getOrgList?enterpriseid='+$("#enterpriseid").val(),
+                                    type : "GET",
+                                    success : function(data) {
+                                        var result = "";
+                                        var Str = "";
+                                        if (data != undefined && data != "") {
+                                            result = eval(data);
+                                            Str = result.data[0];
+                                        }
+                                        var datas = [];
+                                        for (var i = 0; i < Str.length; i++) {
+                                            datas[i] = [];
+                                            datas[i].push(Str[i].companyid);
+                                            datas[i].push(Str[i].companyname);
+                                        }
+                                        test6.setData(datas, true); // 设置显示的内容，并更新
+                                        test6.setTitle([ '组织机构ID', '组织机构名称']); // 设置标题
+                                    }
+                                },
+                                callback:function(rowData){
+                                    $("#orgid").val(rowData[0]);
+                                    $("#orgname").val(rowData[1]);
+                                }
+                            });
+                        }
+                    });
+
+                },
+
+                validated: {//校验
+                    rules: {//校验规则
+                        account: "required",
+                        password: "required",
+                        name: "required",
+                        valid: "required",
+                        enterprisecode: "required",
+                        enterpriseid: "required",
+                        employeeid: "required",
+                        employeename: "required",
+                        telphone: "required",
+//                        telphone: {required:false,telephone:true},
+//                        eMail: {required:false,email:true}
+                    },
+                    messages: {//校验提示信息
+                        account: "账户不能为空",
+                        password: "密码不能为空",
+                        name: "姓名不能为空",
+                        valid: "状态不能为空",
+                        enterprisecode: "企业编码不能为空",
+                        enterpriseid: "企业id不能为空",
+                        employeeid: "关联员工不能为空",
+                        employeename: "关联员工姓名不能为空",
+                        telphone: "手机号码不能为空"
+//                        eMail: "请输入正确的邮箱"
+                    }
+
+                }
+            },
+            detail: { // 详情的配置
+                onclick:function (index,row) {
+                    showDetail(row);
+                }
+            },
+            search: {placeHolder:"搜索账号、用户id、名称"},
+            handleCol:true,
+            tools: {
+
+            },
+            seniorSearch:false,
+//            seniorSearch: {
+//                plusFiled: template("usermanage_searchpanelTpl", {})
+//            },
+            edit: {
+                onclick:function (index,row) {
+                    var html = template("system-editUserTempl",row);
+
+                    var editopen = layer.open({
+                        type: 1,
+                        title: "用户信息编辑",
+                        maxmin: true,   //开启弹窗缩放
+                        area: ['800px', '400px'], //宽高
+                        content: html,
+                        btn:["确定","取消"],
+                        success:function () {
+                            var value=$("#hidden_edit_valid").val();
+                            $("#edit_valid").val(value);
+
+                            var edit_enterprisecode=$("#edit_enterprisecode").val();
+                            $("#edit_enterprisecode").attr("readonly",true);
+                            $("#edit_enterpriseid").attr("readonly",true);
+
+                            var test5 = $(".employee_entry").bigAutocomplete({
+                                width : 'auto',
+                                id : [ 'employeeid', 'opcode', 'employeename' ],
+                                highlight : true,
+                                ajax : {
+                                    url : '/user/getEmployeeList?enterprisecode='+edit_enterprisecode,
+                                    type : "GET",
+                                    success : function(data) {
+                                        var result = "";
+                                        var Str = "";
+                                        if (data != undefined && data != "") {
+                                            result = eval(data);
+                                            Str = result.data[0];
+                                        }
+                                        var datas = [];
+                                        for (var i = 0; i < Str.length; i++) {
+                                            datas[i] = [];
+                                            datas[i].push(Str[i].employeeid);
+                                            datas[i].push(Str[i].opcode);
+                                            datas[i].push(Str[i].employeename);
+                                        }
+                                        test5.setData(datas, true); // 设置显示的内容，并更新
+                                        test5.setTitle([ '员工编号', '员工操作码', '员工姓名' ]); // 设置标题
+                                    }
+                                },
+                                callback:function(rowData){
+                                    $("#edit_employeeid").val(rowData[0]);
+                                    $("#edit_employeename").val(rowData[2]);
+                                }
+                            });
+
+
+                            var test6 = $(".orgid_entry").bigAutocomplete({
+                                width : 'auto',
+                                id : [ 'orgid', 'orgname'],
+                                highlight : true,
+                                ajax : {
+                                    url : '/user/getOrgList?enterpriseid='+$("#edit_enterpriseid").val(),
+                                    type : "GET",
+                                    success : function(data) {
+                                        var result = "";
+                                        var Str = "";
+                                        if (data != undefined && data != "") {
+                                            result = eval(data);
+                                            Str = result.data[0];
+                                        }
+                                        var datas = [];
+                                        for (var i = 0; i < Str.length; i++) {
+                                            datas[i] = [];
+                                            datas[i].push(Str[i].companyid);
+                                            datas[i].push(Str[i].companyname);
+                                        }
+                                        test6.setData(datas, true); // 设置显示的内容，并更新
+                                        test6.setTitle([ '组织机构ID', '组织机构名称']); // 设置标题
+                                    }
+                                },
+                                callback:function(rowData){
+                                    $("#edit_orgid").val(rowData[0]);
+                                    $("#edit_orgname").val(rowData[1]);
+                                }
+                            });
+                        },
+                        yes: function () {
+                            toSaveFun(editopen,table);
+
+                        },
+                        no:function () {
+                            layer.close(editopen);
+                        }
+                    });
+                }
+            },
+            del: {
+                onclick:function (index,row) {
+                    deleteOneFun(row,table);
+
+                }
+            },
+            //编辑
+            batchedit:function () {
+                toEidtFun(table);
+            },
+            //批量删除
+            batchdel:function () {
+                    deletetable(table);
+            },
+            //导入
+//            import:function () {
+//                importBatch(table);
+//            },
+            //查询
+            batchsearch:function () {
+                openSearchDlg(table);
+            },
+            onInit:function(){
+                var that = this;
+                $("#disableBtn").on("click",function(){
+                   var selectRow =  that.getSelectRow(); //获取选择的行
+                   console.info(selectRow);
+                });
+//                 $("#search").on("click",function(){
+//                  openSearchDlg(table);
+//                });
+//                $("#level_edit").on("click", function() {
+//                    toEidtFun(table);
+//                });
+//                $("#level_delete").on("click", function() {
+//                    deletetable(table);
+//                });
+                $("#importBtn").on("click",function(){
+                    importBatch(table);
+                });
+                $("#downloadBtn").on("click",function(){
+                    downloadFile();
+                });
+                $("#userSync").on("click",function(){
+                    userSync(table);
+                });
+
+                if(enterpriseLevel<100){
+                    if(enterpriseCode!="YINENG"){
+                        $("#userSync").hide();
+                    }else{
+                        if(account!='ynadmin'){
+                            $("#userSync").hide();
+                        }
+                    }
+                }
+            },
+            // 表格的头部，有多少列，就写多少
+            columns: [{
+                filed: "账号",
+                name: "account"
+            }, {
+                filed: "用户ID",
+                name: "userId"
+            }, {
+                filed: "员工ID",
+                name: "employeeid"
+            }, {
+                filed: "名称",
+                name: "name"
+            }, {
+                filed: "地址",
+                name: "address"
+            }, {
+                filed: "状态",
+                name: "valid"
+            }, {
+                filed: "备注",
+                name: "memo"
+            },{
+                filed: "权限查看",
+                name: "memo"
+            }],
+            columnDefs: [
+                {
+                render: function (data, type, row) { // 格式化 列
+                    // 该列的原始数据是毫秒数
+                    // 转成时间格式再渲染
+                    return "<a  class='user-roleList' style='cursor:pointer'>权限查看</a>";
+                },
+                targets: [9] // 第几列
+                },
+                {
+                    render: function (data, type, row) {
+                        if (data == "1") {
+                            return "有效";
+                        } else if (data == "0") {
+                            return "无效";
+                        } else {
+                            return "";
+                        }
+//                        if (data == undefined || data == "") {;
+//                            return "";
+//                        } else if (data == 1) {
+//                            return "有效";
+//                        } else {
+//                            return "无效";
+//                        }
+                    },
+                    targets: [7] // 第几列 6 9 10 11 12
+                }
+
+            ],
+            // 表格获取信息的后台服务器地址
+            url: "/user/userList"
+           
+        };
+        var table = suneeeUI.seTable("system-user-manage-table", option);
+
+        //绑定事件
+        $("#system-user-manage-table").on("click",".user-roleList",function () {
+            var index = $(".user-roleList").index(this);
+            var rowData =  table.option.data[index];
+            $.ajax({
+                type: "GET",
+                url: "/user/toUserRoleList",
+                data: {"account":rowData.account},
+                dataType: "json",
+                error: function (result) {
+                    console.info(e);
+                    layer.msg("请求出错！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1)
+                        openRoleList(result.data[0]);
+                    else
+                        layer.msg(result.msg);
+                }
+            });
+        });
+
+        function openRoleList(data){
+            //可以根据rowData 请求服务器获取该行的详细数据
+            var roleHtml = template("UserRoleList",{});
+            var index_1=layer.open({
+                type:1,
+                content:roleHtml,
+                maxmin: true,
+                area:["600px","400px"],
+                btn:["确定"],
+                success:function(){
+                    createRoleDetailTb(data);
+                },
+                yes:function(){
+                    layer.close(index_1);
+                }
+            });
+        }
+
+
+        function createRoleDetailTb(data){
+            var tboption = {
+                checkCol:false,
+                border:false,
+                handleCol:false,
+                height:"200px",
+                columns: [{
+                    filed: "角色编码",
+                    name: "roleCode"
+                }, {
+                    filed: "角色名称",
+                    name: "roleName"
+                }, {
+                    filed: "角色描述",
+                    name: "roleDescribe"
+                }, {
+                    filed: "状态",
+                    name: "valid"
+                }],
+                data:data,
+                columnDefs: [
+                    {
+                        render: function (data, type, row) {
+                            if (data == "1") {
+                                return "可用";
+                            } else if (data == "0") {
+                                return "不可用";
+                            } else {
+                                return "";
+                            }
+                        },
+                        targets: [5]
+                    }
+                ],
+                onInit:function(){
+                    $("#user-roleList-table").find(".table-options").hide();
+                    $("#user-roleList-table").find(".table").css("width","100%");
+                }
+            }
+            var roleTb = suneeeUI.seTable("user-roleList-table", tboption);
+        }
+
+
+
+        function openSearchDlg(tableObj){
+            var searchHtml = template("usermanage_searchpanelTpl",{});
+            var searchWindow = layer.open({
+                type:1,
+                title:"搜索查询",
+                maxmin: true,
+                content:searchHtml,
+                area:["400px","300px"],
+                btn:["搜索","取消"],
+                id:"searchForm",
+                yes:function(){
+                    // 当点击搜索的时候，就使用以下方法进行表格搜索
+                    var searchData = [{
+                                name:"account", //搜索的字段
+                                value:$("#searchForm").find("[name='account']").val() //搜索字段的值
+                        },{
+                                name:"userId", //搜索的字段
+                                value:$("#searchForm").find("[name='userId']").val() //搜索字段的值
+                        },{
+                                name:"name", //搜索的字段
+                                value:$("#searchForm").find("[name='name']").val() //搜索字段的值
+                        }
+                    ];
+                    //调用接口 进行搜索
+                    tableObj.search(searchData);
+                    layer.close(searchWindow)
+                }
+            });
+        }
+
+
+        //详情弹窗
+        function showDetail(row){
+            var userInfoDetail = template("userInfoDetail", row);
+            var index = layer.open({
+                type: 1,
+                title: "用户详细信息",
+                maxmin: true,
+                area: ['800px', '400px'], //宽高
+                content: userInfoDetail,
+                success: function () {
+                    var value=$("#hidden_detail_valid").val();
+                    $("#detail_valid").val(value);
+                },
+//            btn: ["关闭"],
+                yes: function () {
+                    layer.close(index);
+                }
+            });
+        }
+
+        //编辑
+        function toEidtFun(tableObj) {
+            var rows = tableObj.getSelectRow();
+            if (rows.length == 1){
+                var row = rows[0].data ;
+                var html = template("system-editUserTempl",row);
+                var editopen = layer.open({
+                    type: 1,
+                    title: "用户信息编辑",
+                    maxmin: true,
+                    area: ['800px', '400px'], //宽高
+                    content: html,
+                    btn:["确定","取消"],
+                    success:function () {
+                        var value=$("#hidden_edit_valid").val();
+                        $("#edit_valid").val(value);
+
+                        var edit_enterprisecode=$("#edit_enterprisecode").val();
+                        $("#edit_enterprisecode").attr("readonly",true);
+                        $("#edit_enterpriseid").attr("readonly",true);
+
+                        var test5 = $(".employee_entry").bigAutocomplete({
+                            width : 'auto',
+                            id : [ 'employeeid', 'opcode', 'employeename' ],
+                            highlight : true,
+                            ajax : {
+                                url : '/user/getEmployeeList?enterprisecode='+edit_enterprisecode,
+                                type : "GET",
+                                success : function(data) {
+                                    var result = eval(data);
+                                    var Str = result.data[0];
+                                    var datas = [];
+                                    for (var i = 0; i < Str.length; i++) {
+                                        datas[i] = [];
+                                        datas[i].push(Str[i].employeeid);
+                                        datas[i].push(Str[i].opcode);
+                                        datas[i].push(Str[i].employeename);
+                                    }
+                                    test5.setData(datas, true); // 设置显示的内容，并更新
+                                    test5.setTitle([ '员工编号', '员工操作码', '员工姓名' ]); // 设置标题
+                                }
+                            },
+                            callback:function(rowData){
+                                $("#edit_employeeid").val(rowData[0]);
+                                $("#edit_employeename").val(rowData[2]);
+                            }
+                        });
+                    },
+                    yes: function () {
+                        toSaveFun(editopen,table);
+
+                    },
+                    no:function () {
+                        layer.close(editopen);
+                    }
+                });
+            }else{
+                layer.alert("请选择1条记录！");
+            }
+        }
+
+        //编辑保存
+        function toSaveFun(layerIndex,table) {
+            var d = {};
+            var t = $('#system-editUserDlg').find("form").serializeArray();
+            $.each(t, function () {
+                d[this.name] = this.value;
+            });
+            //数据校验
+//            if(d["eMail"]==""&&d["telphone"]==""){
+//                layer.msg("手机号码和邮箱地址不能同时为空！");
+//                return false;
+//            }
+            if(d["telphone"]==""){
+                layer.msg("手机号码不能为空！");
+                return false;
+            }
+            var telpartten = /^1\d{10}$/;
+            if(!telpartten.test(d["telphone"])){
+                layer.msg("请输入正确的手机号码！");
+                return false;
+            }
+//            var emailpartten= /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+//            if(!emailpartten.test(d["eMail"])){
+//                layer.msg("请输入正确的邮箱！");
+//                return false;
+//            }
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url:  "/user/userModify",
+                data: JSON.stringify(d),
+                dataType: "json",
+                error: function (result) {
+                    layer.msg("处理失败！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("保存成功！");
+                        layer.close(layerIndex);
+                        table.reload();
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+        }
+
+        //批量/多条删除
+        function deletetable(tableObj){
+            var rows =  tableObj.getSelectRow(); //获取选择的行
+            if (rows.length > 0){
+                layer.confirm('你确定删除所选记录吗？删除操作不能恢复!', {
+                    btn : [ '确定', '取消' ]
+                    //按钮
+                }, function() {
+                    var accounts = "";
+                    for(var i = 0 ; i < rows.length ; i++){
+                        var row = rows[i].data ;
+                        accounts += row.account + ",";
+                    }
+                    var loading = layer.load(1, {
+                        shade: [0.5,'#fff'] //0.1透明度的白色背景
+                    });
+                    $.ajax({
+                        type: "DELETE",
+                        dataType: "json",
+                        data: accounts,
+                        url: "/user/userBatchDelete",
+                        success: function (result) {
+                            layer.close(loading);
+                            if(result.returnCode==1){
+                                layer.msg("删除成功！");
+                                tableObj.reload(); //表格刷新
+                            }else{
+                                layer.msg(result.msg);
+                                tableObj.reload(); //表格刷新
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            layer.close(loading);
+                        }
+                     });
+                });
+            }else{
+                layer.alert("请选择删除数据！");
+            }
+        }
+
+        //删除一行
+        function deleteOneFun(row,table) {
+            layer.confirm("确定删除该条记录吗?", {
+                btn: ['确定', '取消']//按钮
+            }, function () { // 点击确定的时候
+                $.ajax({
+                    type: "DELETE",
+                    dataType: "json",
+                    data: row.account,
+                    url: "/user/userBatchDelete",
+                    success: function (result) {
+                        if(result.returnCode==1){
+                            layer.msg("删除成功！");
+                            table.reload(); //表格刷新
+                        }else{
+                            layer.msg(result.msg);
+                            table.reload(); //表格刷新
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
+                });
+            });
+        }
+
+
+        function importBatch(table) {
+            var batchImport = template("batchImport", {});
+            var import_index = layer.open({
+                type: 1,
+                title: "批量导入",
+                maxmin: true,
+                area: ['800px', '400px'], //宽高
+                content: batchImport,
+                success: function () {
+                },
+                btn: ["确定"],
+                yes: function () {
+                    submitFile(import_index,table);
+                }
+            });
+
+        }
+
+        function submitFile(import_index,table) {
+            var formData = new FormData($("#batchImportForm" )[0]);
+            var loading1 = layer.load(1, {shade: [0.6,'#fff']});
+            $.ajax({
+                url: '/user/batchImport' ,
+                type: 'POST',
+                data: formData,
+//                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    layer.close(loading1);
+                    if(result.returnCode==1){
+                        layer.msg("处理成功");
+                        layer.close(import_index);
+                        table.reload();
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                },
+                error: function (result) {
+                    layer.close(loading1);
+                    layer.msg("处理失败");
+                }
+            });
+        }
+
+
+        function downloadFile() {
+            window.open("/static/file/user_import.xlsx");
+        }
+
+
+        //用户手动同步
+        function userSync(table){
+            var syncUserTempl = template("system-syncUserTempl", {});
+            var index = layer.open({
+                type: 1,
+                title: "用户同步",
+                maxmin: true,
+                area: ['800px', '400px'], //宽高
+                content: syncUserTempl,
+                success: function () {
+
+                },
+                btn: ["确定","取消"],
+                yes: function () {
+                    syncSubmit(table,index);
+                },
+                no: function () {
+                    layer.close(index);
+                }
+            });
+        }
+
+
+        function syncSubmit(table,index) {
+            var d = {};
+            var t = $('#system-syncUserDlg').find("form").serializeArray();
+            $.each(t, function () {
+                d[this.name] = this.value;
+            });
+            if(d["enterprisecode"]==""){
+                layer.msg("企业编码不能为空！");
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url:  "/user/syncUser",
+                data: JSON.stringify(d),
+                dataType: "json",
+                error: function (result) {
+                    layer.msg("同步成功！");
+                },
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("同步成功！");
+                        layer.close(index);
+                        table.reload();
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                }
+            });
+
+        }
+
+
+
+    });
+
+
+
+</script>

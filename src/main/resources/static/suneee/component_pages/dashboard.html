@@ -1,0 +1,907 @@
+<div id="dashboard_div" class="newpage-con dashboard_div">
+    <!--自定义报表-->
+    <div class="top-configure">
+        <div id="timedays-selected" class="select_cycle">
+            <ul class="nav nav-pills nav-justified" id="timedays-navtab">
+                <li role="presentation">
+                    <a href="#" data-date="today">今日</a>
+                </li>
+                <li role="presentation" class="active">
+                    <a href="#" data-date="week">周</a>
+                </li>
+                <li role="presentation">
+                    <a href="#" data-date="month">月</a>
+                </li>
+                <li role="presentation">
+                    <a href="#" data-date="year">年</a>
+                </li>
+            </ul>
+        </div>
+        <div class="period-range">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default">
+                        <i class="fa fa-angle-left"></i>
+                    </button>
+                </span>
+                <select id="timePeriod-select" name="timePeriod-select" class="form-control" size="1">
+                    <option value="0">2017年-第26周</option>
+                    <option value="1">2017年-第27周</option>
+                    <option value="2">2017年-第28周</option>
+                    <option value="3">2017年-第29周</option>
+                </select>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default">
+                        <i class="fa fa-angle-right"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="date-range" id="ds-date-range">
+            <div class="input-group input-daterange" data-date-format="mm/dd/yyyy">
+                <input disabled="disabled" type="text" id="example-daterange1" name="example-daterange1" class="form-control text-center"
+                    placeholder="开始日期">
+                <span class="input-group-addon">
+                    <i class="fa fa-angle-right"></i>
+                </span>
+                <input disabled="disabled" type="text" id="example-daterange2" name="example-daterange2" class="form-control text-center"
+                    placeholder="结束日期">
+            </div>
+        </div>
+        <div class="custom-time">
+            <input id="costom-time" type="checkbox" name="iCheck">自定义时间
+        </div>
+        <div class="refresh-setting">
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a class="btn btn-alt btn-default">
+                        <i class="gi gi-refresh"></i>
+                    </a>
+                    <a href="javascript:void(0)" data-toggle="dropdown" class="btn btn-alt btn-default dropdown-toggle">
+                        <i class="fa fa-cog"></i>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu text-left dropdown-menu-right select-panel">
+                        <li class="dropdown-header">面板设置</li>
+                        <div>
+                            <li>
+                                <input type="checkbox" checked/> 销售总额
+                            </li>
+                            <li>
+                                <input type="checkbox" checked/> 销售总额走势图
+                            </li>
+                            <li>
+                                <input type="checkbox" checked/> 平均销售总额
+                            </li>
+                            <li>
+                                <input type="checkbox" checked/> 支付方式统计
+                            </li>
+                            <li>
+                                <input type="checkbox" checked/> 分时销售汇总
+                            </li>
+                            <li>
+                                <input type="checkbox" checked/> 分类销售排行
+                            </li>
+                            <li>
+                                <input type="checkbox" checked/> 销售对比图
+                            </li>
+                            <li>
+                                <input type="checkbox" /> 库存走势图
+                            </li>
+                            <li>
+                                <input type="checkbox" /> 库存对比图
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--自定义报表 end-->
+    <!--销售总量统计面板-->
+    <div class="total-sales" id="particles-js">
+        <div id="total-sales">
+            <h1>2017年-第26周 销售总额：</h1>
+            <h1>
+                <strong>¥79,336.52</strong>
+            </h1>
+            <div class="blueline"></div>
+            <h3>同期高出¥8,862.29（+10%）</h3>
+        </div>
+
+    </div>
+    <!--销售总量统计面板 end-->
+    <!--数据图标面板-->
+    <div class="row">
+        <!--销售总额-->
+        <div class="col-md-6">
+            <div class="block">
+                <!-- Interactive Title -->
+                <div class="block-title">
+                    <!-- Interactive block controls (initialized in js/app.js -> interactiveBlocks()) -->
+                    <div class="block-options pull-right">
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-fullscreen" title="放大/缩小">
+                            <i class="fa fa-desktop"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-content" title="收缩/展开">
+                            <i class="fa fa-arrows-v"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-hide" title="隐藏面板">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <h2>销售总额</h2>
+                </div>
+                <!-- END Interactive Title -->
+                <!-- Interactive Content -->
+                <!-- The content you will put inside div.block-content, will be toggled -->
+                <div class="block-content chart-content">
+                    <div id="total_sales" style="height:100%"></div>
+                </div>
+                <!-- END Interactive Content -->
+            </div>
+        </div>
+        <!--销售总额 end-->
+        <!--平均销售总额-->
+        <div class="col-md-6">
+            <div class="block">
+                <!-- Interactive Title -->
+                <div class="block-title">
+                    <!-- Interactive block controls (initialized in js/app.js -> interactiveBlocks()) -->
+                    <div class="block-options pull-right">
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-fullscreen" title="放大/缩小">
+                            <i class="fa fa-desktop"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-content" title="收缩/展开">
+                            <i class="fa fa-arrows-v"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-hide" title="隐藏面板">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <h2>平均销售总额</h2>
+                </div>
+                <!-- END Interactive Title -->
+                <!-- Interactive Content -->
+                <!-- The content you will put inside div.block-content, will be toggled -->
+                <div class="block-content chart-content">
+                    <div id="average_sales" style="height:100%"></div>
+                </div>
+                <!-- END Interactive Content -->
+            </div>
+        </div>
+        <!--平均销售总额 end-->
+        <!--支付方式-->
+        <div class="col-md-6">
+            <div class="block">
+                <!-- Interactive Title -->
+                <div class="block-title">
+                    <!-- Interactive block controls (initialized in js/app.js -> interactiveBlocks()) -->
+                    <div class="block-options pull-right">
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-fullscreen" title="放大/缩小">
+                            <i class="fa fa-desktop"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-content" title="收缩/展开">
+                            <i class="fa fa-arrows-v"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-hide" title="隐藏面板">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <h2>支付方式</h2>
+                </div>
+                <div class="block-content chart-content">
+                    <div id="payment_method" style="height:100%"></div>
+                </div>
+            </div>
+        </div>
+        <!--支付方式 end-->
+        <!--分时销售汇总-->
+        <div class="col-md-6">
+            <div class="block">
+                <!-- Interactive Title -->
+                <div class="block-title">
+                    <!-- Interactive block controls (initialized in js/app.js -> interactiveBlocks()) -->
+                    <div class="block-options pull-right">
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-fullscreen" title="放大/缩小">
+                            <i class="fa fa-desktop"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-content" title="收缩/展开">
+                            <i class="fa fa-arrows-v"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-hide" title="隐藏面板">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <h2>分时销售汇总</h2>
+                </div>
+                <div class="block-content chart-content">
+                    <div id="time_sales" style="height:100%"></div>
+                </div>
+            </div>
+        </div>
+        <!--分时销售汇总 end-->
+        <!--分类销售排行-->
+        <div class="col-md-6">
+            <div class="block">
+                <!-- Interactive Title -->
+                <div class="block-title">
+                    <!-- Interactive block controls (initialized in js/app.js -> interactiveBlocks()) -->
+                    <div class="block-options pull-right">
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-fullscreen" title="放大/缩小">
+                            <i class="fa fa-desktop"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-content" title="收缩/展开">
+                            <i class="fa fa-arrows-v"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-hide" title="隐藏面板">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <h2>分类销售排行</h2>
+                </div>
+                <div class="block-content chart-content">
+                    <div id="category_sales" style="height:100%"></div>
+                </div>
+            </div>
+        </div>
+        <!--分类销售排行 end-->
+        <!--销售对比图-->
+        <div class="col-md-6">
+            <div class="block">
+                <!-- Interactive Title -->
+                <div class="block-title">
+                    <!-- Interactive block controls (initialized in js/app.js -> interactiveBlocks()) -->
+                    <div class="block-options pull-right">
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-fullscreen" title="放大/缩小">
+                            <i class="fa fa-desktop"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-toggle-content" title="收缩/展开">
+                            <i class="fa fa-arrows-v"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default" data-toggle="block-hide" title="隐藏面板">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <h2>销售对比图</h2>
+                </div>
+                <div class="block-content chart-content">
+                    <div id="sales_comparison" style="height:100%"></div>
+                </div>
+            </div>
+        </div>
+        <!--销售对比图 end-->
+    </div>
+    <!--数据图标面板 end-->
+</div>
+<script>
+    // 加载初始化放到index.html 进行初始化
+    //    // 加载完首页再初始化
+    //    App.init();
+    particlesJS('particles-js', particlesObj);
+    //当前页面JS
+
+    function ChartView() {
+
+        // 基于准备好的dom，初始化echarts图表
+        // 销售总额折线图
+
+        var TotalSaleChart = echarts.init(document.getElementById('total_sales')); //设置主题
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            title: {
+                show: 'true',
+                text: '¥79,336.52 ',
+                subtext: '+10%↑',
+                subtextStyle: {
+                    fontSize: 14,
+                    color: 'green',
+                    backgroundColor: '#ff3300',
+                },
+                padding: 0
+            },
+            grid: {
+                x: 20,
+                y: 70,
+                x2: 20,
+                y2: 40
+            },
+            //  legend: {
+            //      data:['搜索引擎']
+            //  },
+            toolbox: {
+                show: true,
+                feature: {
+                    //mark : {show: true},
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar']
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                axisLine: {
+                    lineStyle: {
+                        width: 1
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            }],
+            yAxis: [
+
+                {
+                    show: false,
+                    //type : 'value'
+                }
+            ],
+            series: [{
+                name: '销售额',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        color: '#f95854', // 阳线边框颜色
+                        borderWidth: 2,
+                        areaStyle: {
+                            color: 'rgba(249, 88, 84, 0.3)',
+                            type: 'default',
+
+                        }
+                    },
+
+                },
+                data: [820, 932, 901, 934, 1290, 1330, 1320]
+            }]
+        };
+        // 平均销售总额
+        var AverageChart = echarts.init(document.getElementById('average_sales')); //设置主题
+        var option2 = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            title: {
+                show: 'true',
+                text: '¥84,930.73 ',
+                subtext: '+5%↓',
+                subtextStyle: {
+                    fontSize: 14,
+                    color: 'red',
+                    backgroundColor: '#ff3300',
+                },
+                padding: 0
+            },
+            grid: {
+                x: 20,
+                y: 70,
+                x2: 20,
+                y2: 40
+            },
+            //  legend: {
+            //      data:['搜索引擎']
+            //  },
+            toolbox: {
+                show: true,
+                feature: {
+                    //mark : {show: true},
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar']
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                axisLine: {
+                    lineStyle: {
+                        width: 1
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                data: ['第20周', '第21周', '第22周', '第23周', '第24周', '第25周', '第26周']
+            }],
+            yAxis: [
+
+                {
+                    //type : 'value',
+                    show: false
+
+                }
+            ],
+            series: [{
+                name: '销售总额',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        color: '#0bb1f3', // 阳线边框颜色
+                        borderWidth: 2,
+                        areaStyle: {
+                            color: 'rgba(11, 177, 243, 0.3)',
+                            type: 'default',
+
+                        }
+
+                    },
+
+                },
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均销售总额/周'
+                    }],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            }
+                        }
+                    }
+                },
+
+                data: [52368.69, 80368.2, 92368.52, 86368.32, 88368.35, 99336.52, 79336.52]
+            }]
+        };
+
+        // 支付方式
+        var PaymentMethod = echarts.init(document.getElementById('payment_method')); //设置主题
+        var option3 = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['现金', '储值卡', '微信', '支付宝', '其它']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    //mark : {show: true},
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'center',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff']
+            },
+            calculable: true,
+            series: [{
+                name: '访问来源',
+                type: 'pie',
+                radius: ['50%', '70%'],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            position: 'center',
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    }
+                },
+                data: [{
+                    value: 335,
+                    name: '现金'
+                }, {
+                    value: 310,
+                    name: '储值卡'
+                }, {
+                    value: 234,
+                    name: '微信'
+                }, {
+                    value: 135,
+                    name: '支付宝'
+                }, {
+                    value: 1352,
+                    name: '其他'
+                }]
+            }]
+        };
+
+        // 分时销售汇总
+        var TimeSales = echarts.init(document.getElementById('time_sales')); //设置主题
+        var option4 = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            title: {
+                show: 'true',
+                text: '¥4,912.47 ',
+                subtext: '+5%↓',
+                subtextStyle: {
+                    fontSize: 14,
+                    color: 'red',
+                    backgroundColor: '#ff3300',
+                },
+                padding: 0
+            },
+            grid: {
+                x: 20,
+                y: 70,
+                x2: 20,
+                y2: 40
+            },
+            //  legend: {
+            //      data:['搜索引擎']
+            //  },
+            toolbox: {
+                show: true,
+                feature: {
+                    //mark : {show: true},
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar']
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                axisLine: {
+                    lineStyle: {
+                        width: 1
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                data: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00',
+                    '24:00'
+                ]
+            }],
+            yAxis: [
+
+                {
+                    show: false,
+                    //type : 'value'
+                }
+            ],
+            series: [{
+                name: '销售额',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        color: '#4bb43a', // 阳线边框颜色
+                        borderWidth: 2,
+                        areaStyle: {
+                            color: 'rgba(75, 180, 58, 0.3)',
+                            type: 'default',
+
+                        }
+
+                    },
+
+                },
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均销售额/小时'
+                    }],
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: false
+                            }
+                        }
+                    }
+                },
+
+                data: [2368.69, 6368.2, 2368.52, 6368.32, 8368.35, 9336.52, 6036.52, 4236.52, 3036.52,
+                    636.52
+                ]
+            }]
+        };
+
+        // 分类销售排行
+        var CategorySales = echarts.init(document.getElementById('category_sales')); //设置主题
+        var option5 = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    //mark : {show: true},
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar']
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff']
+            },
+            grid: {
+                x: 70,
+                y: 30,
+                x2: 20,
+                y2: 40
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'value',
+                boundaryGap: [0, 0.08]
+            }],
+
+            yAxis: [{
+                type: 'category',
+                axisTick: {
+                    show: false
+                },
+                data: ['其它产品', '手动产品', '工具产品', '低压产品', '照明产品', '智能产品', 'LED产品']
+            }],
+            series: [{
+                name: '销售件数',
+                type: 'bar',
+                data: [1325, 2325, 3438, 4650, 5594, 8141, 9807]
+            }]
+        };
+
+
+        // 销售对比图
+        var SalesComparison = echarts.init(document.getElementById('sales_comparison')); //设置主题
+        var option6 = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                x: 40,
+                y: 70,
+                x2: 40,
+                y2: 40
+            },
+            legend: {
+                data: ['当前', '同期']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    //mark : {show: true},
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar']
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff']
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+            }],
+            yAxis: [{
+                type: 'value'
+            }],
+            series: [{
+                name: '当前',
+                type: 'bar',
+                data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                markPoint: {
+                    data: [{
+                        type: 'max',
+                        name: '最大值'
+                    }, {
+                        type: 'min',
+                        name: '最小值'
+                    }]
+                },
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均值'
+                    }]
+                }
+            }, {
+                name: '同期',
+                type: 'bar',
+                data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                markPoint: {
+                    data: [{
+                        name: '年最高',
+                        value: 182.2,
+                        xAxis: 7,
+                        yAxis: 183,
+                        symbolSize: 18
+                    }, {
+                        name: '年最低',
+                        value: 2.3,
+                        xAxis: 11,
+                        yAxis: 3
+                    }]
+                },
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均值'
+                    }]
+                }
+            }]
+        };
+        // 为echarts对象加载数据
+        TotalSaleChart.setOption(option);
+        AverageChart.setOption(option2);
+        PaymentMethod.setOption(option3);
+        TimeSales.setOption(option4);
+        CategorySales.setOption(option5);
+        SalesComparison.setOption(option6);
+
+
+        // 这个函数用于点击首页的时候执行，防止在其他页面放大缩小窗口导致图表改变，用于恢复
+        window.resizeChart = function () {
+            setTimeout(function () {
+                // 延迟执行，不然height不起作用
+                resize_chart()
+            }, 400);
+        }
+        var timenumresize = true;
+        //窗口改变时resize图表大小
+        window.onresize = function () {
+            // 因为这个onresize事件会执行两次，用timenumresize来控制他只执行一次
+            if (timenumresize) timenumresize = false;
+            else return;
+            // 如果当前打开的首页，才让图标跟住改变，不然返回首页的时候会出错
+            if ($("#dashboard_div").parent().hasClass("active"))
+                resize_chart()
+            setTimeout(function () {
+                // 延迟执行，不然height不起作用
+                $("#main-content").height($("#sidebar").height() - 100);
+                $(".ztree").height($("#sidebar").height() - 240);
+                timenumresize = true;
+            }, 400);
+        };
+        // 让图表跟住窗口改变
+        function resize_chart() {
+            TotalSaleChart.resize();
+            AverageChart.resize();
+            PaymentMethod.resize();
+            TimeSales.resize();
+            CategorySales.resize();
+            SalesComparison.resize();
+        }
+    }
+
+    $(function () {
+
+        var chartView = new ChartView();
+        $('input').iCheck({
+            labelHover: false,
+            cursor: true,
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%'
+        });
+
+        initEvent();
+        $('.input-datepicker, .input-daterange').datepicker({
+            weekStart: 1,
+            language: "zh-CN"
+        });
+
+        function initEvent() {
+            $("#timedays-selected a").on("click", function () {
+                var isChecked = $("#costom-time").is(':checked');
+                if (!isChecked) {
+                    return;
+                }
+                var num = $("#timedays-selected a").index(this);
+                var dayType = $(this).data().date;
+                $("#timedays-navtab li").eq(num).tab("show");
+                /**
+                 *  改变图表的展示
+                 * 可以先获取数据再传值进去 一并改变
+                 */
+                // var chartData = null;
+                // changeBanner(dayType);
+                // changeChart(chartData, dayType, chartView);
+            });
+
+            $("#timePeriod-select").on("change", function () {
+                var selectVal = $(this).val();
+                alert(selectVal);
+            });
+
+            $("#costom-time").on("ifClicked", function () {
+                var isChecked = $(this).is(':checked');
+                $("#timedays-selected li").toggleClass("disable_bg");
+                if (!isChecked) {
+                    $("#timePeriod-select").attr("disabled", "disabled");
+                    $("#ds-date-range input").removeAttr("disabled");
+                } else {
+                    $("#ds-date-range input").attr("disabled", "disabled");
+                    $("#timePeriod-select").removeAttr("disabled");
+                }
+            });
+        }
+    });
+</script>

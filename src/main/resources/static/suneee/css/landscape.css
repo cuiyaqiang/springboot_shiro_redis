@@ -1,0 +1,130 @@
+
+
+.hexagon-line {
+  display: block;
+  clear: both;
+  padding: 1vh 0;
+  margin-top: -4.4vh;
+}
+.hexagon-line.even {
+    margin-left: -8.3vh;
+}
+.hexagon-line.even2 {
+    margin-left:-16.6vh;
+}
+.hexagon-line.even3 {
+    margin-left:8vh;
+}
+
+#hive {
+  position: absolute;
+  left:420px;
+  margin-top:6vh;
+  width: 65vh;
+}
+
+.hex span{
+  position:absolute;
+  display:block;
+  text-align:center;
+  vertical-align:top;
+  z-index:100000;
+  pointer-events:none;
+  transform: rotateZ(-90deg);
+  width:10.8vh;
+  height:10.8vh;
+  border: 2px solid #5bb1eb;
+  top:2vh;
+  left:-1vh;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.hex span i{
+	display: block;
+	font-size: 36px;
+	padding-top: 3px;
+	margin:-0.2vh 0 0;
+	height: 7vh;
+}
+
+.hex {
+  word-break: break-all;
+  color: #5bb1eb;
+  height:15.2vh;
+  width: 8.7vh;
+  display: inline-block;
+  position: relative;
+  background-color: transparent;
+  margin:0 3vh 0.11vh 4vh;
+  border-top: solid 2px #5bb1eb;
+  border-bottom: solid 2px #5bb1eb;
+  box-sizing: border-box;
+  border-radius:4px;
+  /*box-shadow: inset 0px 20px 20px -20px #5bb1eb, inset 0px -20px 20px -20px #5bb1eb;*/
+  padding-top:5vh;
+  cursor:pointer;
+  transform-style:preserve-3d;
+  font-size:30px;
+  transition: all .1s ease-in-out;
+  transform: rotateZ(90deg);
+  left: 0;
+  top: 0px;
+  cursor: inherit;
+}
+/*.hex_blue:hover {
+  transform: scale(1.2,1.2) rotateY(0deg)  rotateX(0deg) rotateZ(90deg);
+  animation-fill-mode: forwards;
+  z-index:1000;
+}*/
+.hex_blue:hover,.hex_blue:hover span {
+  border-color:#13609a;
+  color: #13609a;
+}
+.hex_blue{
+	background-color: #ffffff;
+	border-color: #5bb1eb;
+	/*box-shadow: inset 0px 20px 20px -20px #5bb1eb, inset 0px -20px 20px -20px #5bb1eb;*/
+	
+	color: #5bb1eb;
+	cursor: pointer;
+}
+.hex_blue span{
+	border-color: #5bb1eb;
+}
+.hex:before,
+.hex:after {
+  content: '';
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  position: absolute;
+  left: 0px;
+  top: -2px;
+  transform-origin: center center;
+  background-color: inherit;
+  border-top: inherit;
+  border-bottom: inherit;
+  box-sizing: inherit;
+  border-radius: inherit;
+  box-shadow: inherit;
+  
+}
+
+.hex:before {
+  transform: rotateZ(60deg);
+  z-index: 10;
+  height: 15.1vh;
+  width: 8.7vh;
+  left: 0px;
+  top: -2px;
+}
+
+.hex:after {
+  transform: rotateZ(-60deg);
+  z-index: 15;
+  height: 14.9vh;
+  width:9vh;
+  left: -1px;
+  top: -1px;
+}

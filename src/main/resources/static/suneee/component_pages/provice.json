@@ -1,0 +1,133 @@
+{
+	"type": "province",
+	"content": [
+		{
+			"id": 1,
+			"name": "安徽",
+			"fristChart": "A"
+		}, {
+			"id": 2,
+			"name": "北京",
+			"fristChart": "B"
+		}, {
+			"id": 3,
+			"name": "重庆",
+			"fristChart": "C"
+		}, {
+			"id": 4,
+			"name": "甘肃",
+			"fristChart": "G"
+		}
+		, {
+			"id": 5,
+			"name": "广东",
+			"fristChart": "G"
+		}, {
+			"id": 6,
+			"name": "广西",
+			"fristChart": "G"
+		}
+		, {
+			"id": 7,
+			"name": "贵州",
+			"fristChart": "G"
+		}, {
+			"id": 8,
+			"name": "海南",
+			"fristChart": "H"
+		}, {
+			"id": 9,
+			"name": "河北",
+			"fristChart": "H"
+		}, {
+			"id": 10,
+			"name": "黑龙江",
+			"fristChart": "H"
+		}, {
+			"id": 11,
+			"name": "河南",
+			"fristChart": "H"
+		}
+		, {
+			"id": 12,
+			"name": "湖北",
+			"fristChart": "H"
+		}, {
+			"id": 13,
+			"name": "湖南",
+			"fristChart": "H"
+		}
+		, {
+			"id": 14,
+			"name": "江苏",
+			"fristChart": "J"
+		}, {
+			"id": 15,
+			"name": "江西",
+			"fristChart": "J"
+		}
+		, {
+			"id": 16,
+			"name": "吉林",
+			"fristChart": "J"
+		}, {
+			"id": 17,
+			"name": "辽宁",
+			"fristChart": "L"
+		}, {
+			"id": 18,
+			"name": "内蒙古",
+			"fristChart": "N"
+		}, {
+			"id": 19,
+			"name": "宁夏",
+			"fristChart": "N"
+		}, {
+			"id": 20,
+			"name": "青海",
+			"fristChart": "Q"
+		}
+		, {
+			"id": 21,
+			"name": "山东",
+			"fristChart": "S"
+		}, {
+			"id": 22,
+			"name": "山西",
+			"fristChart": "S"
+		}
+		, {
+			"id": 23,
+			"name": "陕西",
+			"fristChart": "S"
+		}, {
+			"id": 24,
+			"name": "四川",
+			"fristChart": "S"
+		}, {
+			"id": 25,
+			"name": "天津",
+			"fristChart": "T"
+		}, {
+			"id": 26,
+			"name": "新疆",
+			"fristChart": "X"
+		}
+		, {
+			"id": 27,
+			"name": "西藏",
+			"fristChart": "X"
+		}, {
+			"id": 28,
+			"name": "云南",
+			"fristChart": "Y"
+		}
+		, {
+			"id": 29,
+			"name": "浙江",
+			"fristChart": "Z"
+		}
+	]
+}
+
+

@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div id="cache-manage-table">
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        //表格的属性对象，用于初始化表格的设置
+        var option = {
+            // "新增窗口"的配置
+            plusBtn:[{
+                id:"updateCache",
+                text:"缓存同步",
+                clazz:"btn btn-primary btn-sm"
+            }],
+            detail: {
+                onclick:function (index,row) {
+                    showDetail(row,table);
+                }
+            },
+            del: {
+                onclick:function (index,row) {
+                    deleteOneFun(row,table);
+
+                }
+            },
+            search: true,
+            // 表格的头部，有多少列，就写多少
+            columns: [{
+                filed: "Key",
+                name: "key"
+            }, {
+                filed: "Expire",
+                name: "expire"
+            }],
+            // 表格获取信息的后台服务器地址
+            url: "/cacheList",
+            ajax: function (data, callback, settings) {
+                //ajax配置为function,手动调用异步查询
+                $.ajax({
+                    type: "GET",
+                    url: "cacheList",
+                    data: {},
+                    dataType: "json",
+                    success: function (result) {
+                        var finalData = result.data[0];
+                        //封装返回数据
+                        var returnData = {};
+                        returnData.draw = data.draw;//自行返回draw参数,最好由后台返回
+                        returnData.recordsTotal = finalData.totalCount;
+                        returnData.recordsFiltered = finalData.pageSize;
+                        returnData.data = finalData.results;
+                        //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                        callback(returnData);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        layer.msg("查询失败");
+                    }
+                });
+            }
+        };
+        var table = suneeeUI.seTable("cache-manage-table", option);
+
+
+        $("#updateCache").on("click",function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                data: null,
+                url: "/updateCache",
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("同步成功");
+                    }else{
+                        layer.msg(result.msg);
+                    }
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            })
+        });
+
+    });
+
+    //详情弹窗
+    function showDetail(rowData,table){
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            data: {"key":rowData.key},
+            url: "/getDataByKey",
+            error:function(data){
+                alert("系统异常！");
+            },
+            success:function(result){
+                if(result.returnCode==1){
+                    var html="<div>"+result.data+"</div>";
+                    var index = layer.open({
+                        type: 1,
+                        title: "缓存信息",
+                        area: ['800px', '400px'], //宽高
+                        content: html,
+                        success: function () {
+                        },
+                        btn: ["确定"],
+                        yes: function () {
+                            layer.close(index);
+                        }
+                    });
+                };
+            }
+        });
+    }
+
+
+    //删除一行
+    function deleteOneFun(row,table) {
+        layer.confirm("确定删除该条记录吗?", {
+            btn: ['确定', '取消']//按钮
+        }, function () { // 点击确定的时候
+            $.ajax({
+                type: "DELETE",
+                dataType: "json",
+                data: {"keys":row.key},
+                url: "/batchDelete",
+                success: function (result) {
+                    if(result.returnCode==1){
+                        layer.msg("删除成功");
+                        table.reload(); //表格刷新
+                    }else{
+                        layer.msg(result.msg);
+                    }
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        });
+    }
+
+
+
+
+
+</script>
